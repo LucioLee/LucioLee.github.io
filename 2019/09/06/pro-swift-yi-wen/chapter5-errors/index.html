@@ -1,0 +1,1160 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="第五章 错误处理(Errors), iOS">
+    <meta name="description" content="你可以扩展集合，使其具有安全的下标，当值不存在时返回nil：
+extension Array {
+    subscript(safe index: Int) -&gt; Element? {
+        return indices ~= ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>第五章 错误处理(Errors) | Li&#39;s Note</title>
+    <link rel="icon" type="image/png" href="https://cdn.kongyintianxia.com/feedback_0_evYm8e_20190906.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.kongyintianxia.com/feedback_0_evYm8e_20190906.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Li's Note</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.kongyintianxia.com/feedback_0_evYm8e_20190906.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Li's Note</div>
+        <div class="logo-desc">
+            
+            iOS 程序猿一枚~
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        第五章 错误处理(Errors)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Swift/" target="_blank">
+                                <span class="chip bg-color">Swift</span>
+                            </a>
+                        
+                            <a href="/tags/Pro-Swift/" target="_blank">
+                                <span class="chip bg-color">Pro Swift</span>
+                            </a>
+                        
+                            <a href="/tags/错误处理/" target="_blank">
+                                <span class="chip bg-color">错误处理</span>
+                            </a>
+                        
+                            <a href="/tags/断言/" target="_blank">
+                                <span class="chip bg-color">断言</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Pro-Swift/" class="post-category" target="_blank">
+                                Pro Swift
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-09-06
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        5.5k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        21 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>你可以扩展集合，使其具有安全的下标，当值不存在时返回<code>nil</code>：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">extension</span> <span class="token builtin">Array</span> <span class="token punctuation">{</span>
+    <span class="token keyword">subscript</span><span class="token punctuation">(</span><span class="token keyword">safe</span> index<span class="token punctuation">:</span> <span class="token builtin">Int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Element</span><span class="token operator">?</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token builtin">indices</span> <span class="token operator">~</span><span class="token operator">=</span> index <span class="token operator">?</span> <span class="token keyword">self</span><span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token constant">nil</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>– <em>Chris Eidhof (@chriseidhof), author of Advanced Swift</em> </p>
+<h2 id="错误基础-Error-fundamentals"><a href="#错误基础-Error-fundamentals" class="headerlink" title="错误基础(Error fundamentals)"></a>错误基础(Error fundamentals)</h2><p><em>Swift</em> 有一个独特的错误处理方式，只要你完全理解所提供的服务，它就非常灵活。我将以相对简单的方式开始，并介绍所有的错误处理技术。苹果公司的 <em>Swift</em> 参考指南说：<strong><em>throw语句的性能特征可以与return语句的性能特征相媲美</em></strong>，这意味着它们非常快——我们没有理由忽视它们。</p>
+<p>让我们从一个简单的例子开始。你想抛出的所有错误必须是一个符合 <em>Error</em> 协议的枚举，<em>Swift</em> 可以桥接 <em>Objective-C</em> 中的 <em>NSError</em> 类。所以，我们定义一个这样的错误枚举：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">enum</span> <span class="token builtin">PasswordError</span><span class="token punctuation">:</span> <span class="token builtin">Error</span> <span class="token punctuation">{</span>
+   <span class="token keyword">case</span> empty
+   <span class="token keyword">case</span> short
+<span class="token punctuation">}</span></code></pre>
+<p>这是一个普通枚举，就像其他枚举一样，所以我们可以添加一个关联值，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">enum</span> <span class="token builtin">PasswordError</span><span class="token punctuation">:</span> <span class="token builtin">Error</span> <span class="token punctuation">{</span>
+   <span class="token keyword">case</span> empty
+   <span class="token keyword">case</span> short
+   <span class="token keyword">case</span> <span class="token function">obvious</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>要将函数或方法标记为有可能抛出错误，请在其返回类型之前添加<code>throws</code>，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token number">_</span> str<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> with password<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span> <span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// complicated encryption goes here</span>
+   <span class="token keyword">let</span> encrypted <span class="token operator">=</span> password <span class="token operator">+</span> str <span class="token operator">+</span> password
+   <span class="token keyword">return</span> <span class="token function">String</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">.</span>characters<span class="token punctuation">.</span><span class="token function">reversed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>然后使用<code>do</code>、<code>try</code>和<code>catch</code>的组合来运行风险代码。至少，调用我们当前的代码应该是这样的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">do</span> <span class="token punctuation">{</span>
+   <span class="token keyword">let</span> encrypted <span class="token operator">=</span> <span class="token keyword">try</span> <span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token string">"Secret!"</span><span class="token punctuation">,</span> with<span class="token punctuation">:</span> <span class="token string">"T4yl0r"</span><span class="token punctuation">)</span>
+   <span class="token function">print</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Encryption failed"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>它要么打印调用<code>encrypt()</code>的结果，要么打印错误消息。使用<code>catch</code>本身捕获所有可能的错误，这在 <em>Swift</em> 中是必需的。这是有时被称为<em>Pokémon(口袋精灵)</em> 错误处理，因为“你必须抓住他们。” 注：此限制不适用于 <em>Playground</em> 的顶层代码；如果你正在使用一个<em>Playground</em>，你应该把你的<code>do</code>模块放在一个函数中进行测试：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">testCatch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">do</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> encrypted <span class="token operator">=</span> <span class="token keyword">try</span> <span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token string">"Secret!"</span><span class="token punctuation">,</span> with<span class="token punctuation">:</span> <span class="token string">"T4yl0r"</span><span class="token punctuation">)</span>
+      <span class="token function">print</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">)</span>
+   <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+      <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Encryption failed"</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token function">testCatch</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>有时候，在一个<code>catch</code>块中处理所有错误可能对你有用，但是更常见的情况是，你希望捕获个别的情况。要做到这一点，请分别列出每种情况，确保通用捕获是最后一个捕获，这样只有在没有其他匹配的情况下才会使用它：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">do</span> <span class="token punctuation">{</span>
+   <span class="token keyword">let</span> encrypted <span class="token operator">=</span> <span class="token keyword">try</span> <span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token string">"secret information!"</span><span class="token punctuation">,</span> with<span class="token punctuation">:</span> <span class="token string">"T4ylorSw1ft"</span><span class="token punctuation">)</span>
+   <span class="token function">print</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span>empty <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"You must provide a password."</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span>short <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Your password is too short."</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span>obvious <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Your password is obvious"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Error"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>要处理关联值，需要将其绑定到<code>catch</code>块中的常量：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">catch</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span><span class="token function">obvious</span><span class="token punctuation">(</span><span class="token keyword">let</span> message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Your password is obvious: <span class="token interpolation"><span class="token delimiter variable">\(</span>message<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>如果你想要在实际中测试它，请将<code>encrypt()</code>方法修改为：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token number">_</span> str<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> with password<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span> <span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// complicated encryption goes here</span>
+   <span class="token keyword">if</span> password <span class="token operator">==</span> <span class="token string">"12345"</span> <span class="token punctuation">{</span>
+      <span class="token keyword">throw</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span><span class="token function">obvious</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> <span class="token string">"I have the same number on my luggage"</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">let</span> encrypted <span class="token operator">=</span> password <span class="token operator">+</span> str <span class="token operator">+</span> password
+   <span class="token keyword">return</span> <span class="token function">String</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">.</span>characters<span class="token punctuation">.</span><span class="token function">reversed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>在继续之前，还有最后一件事：在处理关联值时，还可以使用模式匹配。为此，首先使用<code>let</code>将关联值绑定到局部常量，然后使用<code>where</code>子句进行筛选。例如，我们可以修改<code>PasswordError</code>。返回应该提供多少字符的简写形式：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">case</span> <span class="token function">short</span><span class="token punctuation">(</span>minChars<span class="token punctuation">:</span> <span class="token builtin">Int</span><span class="token punctuation">)</span></code></pre>
+<p>有了这些变化，我们就可以通过<code>minChars</code>关联值过滤来捕捉<code>short</code>的变化：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">catch</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span><span class="token function">short</span><span class="token punctuation">(</span><span class="token keyword">let</span> minChars<span class="token punctuation">)</span> <span class="token keyword">where</span> minChars <span class="token operator">&lt;</span> <span class="token number">5</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"We have a lax security policy: passwords must be at least <span class="token interpolation"><span class="token delimiter variable">\(</span>minChars<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span><span class="token function">short</span><span class="token punctuation">(</span><span class="token keyword">let</span> minChars<span class="token punctuation">)</span> <span class="token keyword">where</span> minChars <span class="token operator">&lt;</span> <span class="token number">8</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"We have a moderate security policy: passwords must be at least <span class="token interpolation"><span class="token delimiter variable">\(</span>minChars<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span><span class="token function">short</span><span class="token punctuation">(</span><span class="token keyword">let</span> minChars<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"We have a serious security policy: passwords must be at least <span class="token interpolation"><span class="token delimiter variable">\(</span>minChars<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="错误传递-Error-propagation"><a href="#错误传递-Error-propagation" class="headerlink" title="错误传递(Error propagation)"></a>错误传递(Error propagation)</h2><p>当你使用<code>try</code>调用函数时，<em>Swift</em> 会强制你处理任何可能的错误。这有时是无益的行为：如果函数 <em>A</em> 调用函数 <em>B</em>，函数 <em>B</em> 调用函数 <em>C</em>，那么谁应该处理由 <em>C</em> 抛出的错误？如果你的答案是 <em>B</em>，那么你现有的错误处理知识就足够了。</p>
+<p>如果你的答案是 <em>A</em> ——也就是说，一个调用者应该处理它调用的任何函数中的一些或所有错误，以及这些函数调用的函数中的任何错误，等等，你需要了解一下错误传递。</p>
+<p>让我们对 <code>A()、B()、C()</code> 函数调用以及我们已经使用的 <code>PasswordError</code>枚举的精简版本建模：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">enum</span> <span class="token builtin">PasswordError</span><span class="token punctuation">:</span> <span class="token builtin">Error</span> <span class="token punctuation">{</span>
+   <span class="token keyword">case</span> empty
+<span class="token keyword">case</span> short
+   <span class="token keyword">case</span> obvious
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">functionA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">functionB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">functionB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">functionC</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">functionC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">throw</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span>short
+<span class="token punctuation">}</span></code></pre>
+<p>该代码不能按原样编译，因为<code>functionC()</code>会抛出一个错误，但没有使用<code>throws</code>标记。如果我们加上这个，代码如下：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">functionC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token punctuation">{</span>
+   <span class="token keyword">throw</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span>short
+<span class="token punctuation">}</span></code></pre>
+<p>但是现在代码仍然无法编译，因为<code>functionB()</code>在不使用<code>try</code>的情况下调用了一个抛出函数。现在我们看到了几个选项，我想单独研究它们。</p>
+<p>第一个选项是捕获<code>functionB()</code>中的所有错误。如果希望<code>functionA()</code>忽略其下面发生的任何错误，则可以使用此选项，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">functionA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">functionB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">functionB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">do</span> <span class="token punctuation">{</span>
+      <span class="token keyword">try</span> <span class="token function">functionC</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+      <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Error!"</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">functionC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token punctuation">{</span>
+   <span class="token keyword">throw</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span>short
+<span class="token punctuation">}</span></code></pre>
+<p>你可以向<code>functionB()</code>添加单独的<code>catch</code>块，但是原理是一样的。</p>
+<p>第二个选项是<code>functionB()</code>忽略错误，让它们向上冒泡到自己的调用者，这称为错误传递。为此，我们需要将<code>do/catch</code>代码从<code>functionB()</code>移到<code>functionA()</code>。然后我们只需要用<code>throws</code>来标记<code>functionB()</code>，就像这样：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">functionA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">do</span> <span class="token punctuation">{</span>
+      <span class="token keyword">try</span> <span class="token function">functionB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+      <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Error!"</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">functionB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token punctuation">{</span>
+   <span class="token keyword">try</span> <span class="token function">functionC</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">functionC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token punctuation">{</span>
+   <span class="token keyword">throw</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span>short
+<span class="token punctuation">}</span></code></pre>
+<p>在讨论第三个选项之前，我希望你仔细研究一下<code>functionB()</code>的当前代码：这是一个使用<code>try</code>的函数，周围没有<code>do/catch</code>块。这非常好，只要函数本身被标记为<code>throws</code>，那么任何错误都可以继续向上传递。</p>
+<p>第三个选项是将错误处理的部分委托给最合适的函数。例如，你可能希望<code>functionB()</code>捕捉空密码，而<code>functionA()</code>处理所有其他错误。<em>Swift</em> 通常希望所有的<code>try/catch</code>块都是详尽的，但是如果你在一个抛出函数中，这个要求就被放弃了——任何你没有捕获的错误都会向上传播。</p>
+<p>下面的代码中<code>functionB()</code>处理空密码，<code>functionA()</code>处理其他所有事情：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">functionA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">do</span> <span class="token punctuation">{</span>
+      <span class="token keyword">try</span> <span class="token function">functionB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+      <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Error!"</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">functionB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token punctuation">{</span>
+   <span class="token keyword">do</span> <span class="token punctuation">{</span>
+      <span class="token keyword">try</span> <span class="token function">functionC</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span>empty <span class="token punctuation">{</span>
+      <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Empty password!"</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">functionC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token punctuation">{</span>
+   <span class="token keyword">throw</span> <span class="token builtin">PasswordError</span><span class="token punctuation">.</span>short
+<span class="token punctuation">}</span></code></pre>
+<p>最终，必须捕获所有错误用例，因此在某个时候，你需要一个通用的<code>catch all</code>语句。</p>
+<h2 id="将抛出函数作为参数-Throwing-functions-as-parameters"><a href="#将抛出函数作为参数-Throwing-functions-as-parameters" class="headerlink" title="将抛出函数作为参数(Throwing functions as parameters)"></a>将抛出函数作为参数(Throwing functions as parameters)</h2><p>现在我将介绍一下 <em>Swift</em> 的一个非常有用的特性，我之所以这么说，是因为如果你发现自己在质疑为什么它有用，我想确保你能坚持下去——相信我，这是值得的!</p>
+<p>首先，这里有一条来自 <em>Swift 参考指南</em> 的重要引用：<strong><em>非抛出函数是抛出函数的子类型</em></strong>。因此，你可以在与抛出函数相同的位置使用非抛出函数。</p>
+<p>想一想，让它深入：非抛出函数是抛出函数的子类型，因此可以在需要抛出函数的任何地方使用它们。如果你愿意，甚至可以编写如下代码，尽管你会收到编译器警告，因为这是不必要的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">definitelyWontThrow</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Shiny!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">try</span> <span class="token function">definitelyWontThrow</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>真正重要的是，当你使用一个抛出函数作为参数时，我想给你一个实际的例子，这样你就能在实际环境中学习所有这些。</p>
+<p>设想一个应用程序必须远程或本地获取用户数据，然后对其进行操作。有一个函数可以获取远程用户数据，如果存在网络问题，这个函数可能会抛出一个错误。还有第二个函数来获取本地用户数据，它保证能够工作，因此不会抛出。最后，还有第三个函数调用这两个获取函数中的一个，然后对结果执行操作。</p>
+<p>把最后一个函数放到一边，初始代码可能是这样的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">enum</span> <span class="token builtin">Failure</span><span class="token punctuation">:</span> <span class="token builtin">Error</span> <span class="token punctuation">{</span>
+   <span class="token keyword">case</span> <span class="token function">badNetwork</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span>
+   <span class="token keyword">case</span> broken
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">fetchRemote</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span> <span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// complicated, failable work here</span>
+   <span class="token keyword">throw</span> <span class="token builtin">Failure</span><span class="token punctuation">.</span><span class="token function">badNetwork</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> <span class="token string">"Firewall blocked port."</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">fetchLocal</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span> <span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// this won't throw</span>
+   <span class="token keyword">return</span> <span class="token string">"Taylor"</span>
+<span class="token punctuation">}</span></code></pre>
+<p>第三个函数是有趣的地方：它需要调用<code>fetchRemote()</code>或<code>fetchLocal()</code>并对获取的数据进行处理。这两个函数都不接受任何参数，并返回一个字符串，但是一个函数被标记为<code>throws</code>，另一个函数没有。</p>
+<p>回想一下我几分钟前写的：你可以在任何需要抛出函数的地方使用非抛出函数。我们可以这样写一个函数：<code>fetchUserData(using closure: () throws -&gt; String)</code>。让我们来分解一下:</p>
+<ul>
+<li>名为<code>fetchUserData()</code></li>
+<li>它接受闭包作为参数</li>
+<li>该闭包必须不接受任何参数并返回字符串。</li>
+</ul>
+<p>但是闭包不需要抛出：我们说过它可以抛出，但它不必抛出。记住这一点，第一次传递<code>fetchUserData()</code>函数可能是这样的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">fetchUserData</span><span class="token punctuation">(</span>using closure<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">do</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> userData <span class="token operator">=</span> <span class="token keyword">try</span> <span class="token function">closure</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"User data received: <span class="token interpolation"><span class="token delimiter variable">\(</span>userData<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token builtin">Failure</span><span class="token punctuation">.</span><span class="token function">badNetwork</span><span class="token punctuation">(</span><span class="token keyword">let</span> message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">print</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
+   <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+      <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Fetch error"</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token function">fetchUserData</span><span class="token punctuation">(</span>using<span class="token punctuation">:</span> fetchLocal<span class="token punctuation">)</span></code></pre>
+<p>如你所见，我们可以从本地获取切换到远程获取，只需要改变最后一行：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token function">fetchUserData</span><span class="token punctuation">(</span>using<span class="token punctuation">:</span> fetchRemote<span class="token punctuation">)</span></code></pre>
+<p>所以，我们传入的闭包是否抛出并不重要，只要我们声明它可能抛出并适当地处理它。</p>
+<p>当你想用一个可能会抛出异常的闭包作为参数来使用错误传递时，事情就会变得有趣——有趣的是，我的意思是非常棒。坚持住——我们快结束了！</p>
+<p>一个简单的解决方案可以将<code>fetchUserData()</code>声明为抛出，然后捕获调用者的错误，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">fetchUserData</span><span class="token punctuation">(</span>using closure<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token punctuation">{</span>
+   <span class="token keyword">let</span> userData <span class="token operator">=</span> <span class="token keyword">try</span> <span class="token function">closure</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"User data received: <span class="token interpolation"><span class="token delimiter variable">\(</span>userData<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">do</span> <span class="token punctuation">{</span>
+   <span class="token keyword">try</span> <span class="token function">fetchUserData</span><span class="token punctuation">(</span>using<span class="token punctuation">:</span> fetchLocal<span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token builtin">Failure</span><span class="token punctuation">.</span><span class="token function">badNetwork</span><span class="token punctuation">(</span><span class="token keyword">let</span> message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Fetch error"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>在这种情况下，这是可行的，但是 <em>Swift</em> 有一个更聪明的解决方案。这个<code>fetchUserData()</code>可以在我们的应用程序的其他地方调用，可能不止一次——如果所有的<code>try/catch</code>代码都在其中，这会变得非常混乱，特别是当我们使用<code>fetchLocal()</code>并且知道它不会抛出的时候。</p>
+<p><em>Swift</em> 的解决方案是<code>rethrow</code>关键字，我们可以用它来替换<code>fetchUser</code>函数中的常规抛出，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">fetchUserData</span><span class="token punctuation">(</span>using closure<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token keyword">rethrows</span> <span class="token punctuation">{</span>
+   <span class="token keyword">let</span> userData <span class="token operator">=</span> <span class="token keyword">try</span> <span class="token function">closure</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"User data received: <span class="token interpolation"><span class="token delimiter variable">\(</span>userData<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>因此，闭包会<code>throws</code>，但是<code>fetchUserData()</code>函数会<code>rethrows</code>。区别可能看起来很细微，但这段代码现在将在 <em>Xcode</em> 中产生一个警告：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">do</span> <span class="token punctuation">{</span>
+   <span class="token keyword">try</span> <span class="token function">fetchUserData</span><span class="token punctuation">(</span>using<span class="token punctuation">:</span> fetchLocal<span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token builtin">Failure</span><span class="token punctuation">.</span><span class="token function">badNetwork</span><span class="token punctuation">(</span><span class="token keyword">let</span> message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Fetch error"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>如果将<code>try fetchUserData(using: fetchLocal)</code>替换为<code>fetchUserData(using: fetchRemote)</code>，则警告将消失。现在发生的情况是，<em>Swift</em> 编译器正在逐个检查每个对<code>fetchUserData()</code>的调用，现在只需要在传入有可能抛出异常的闭包时使用<code>try/catch</code>。</p>
+<p>因此，当你使用<code>fetchUserData(using: fetchLocal)</code>时，编译器可以看到<code>try/ catch</code>是不必要的，但当你使用<code>fetchUserData(using: fetchRemote)</code>时，<em>Swift</em> 将确保你正确地捕获错误。</p>
+<p>所以，当你传递一个会抛出异常的闭包的时候，你会得到你想从 <em>Swift</em> 得到的所有安全，但是当你传递一个不会抛出异常的闭包的时候，你不需要添加无意义的<code>try/catch</code>代码。</p>
+<p>有了这些知识，再看看短路逻辑<code>&amp;&amp;</code>运算符的代码，从 <em>Swift</em> 源代码中获取：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">func</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>lhs<span class="token punctuation">:</span> <span class="token builtin">Bool</span><span class="token punctuation">,</span> rhs<span class="token punctuation">:</span> @<span class="token function">autoclosure</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Bool</span><span class="token punctuation">)</span> <span class="token keyword">rethrows</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Bool</span> <span class="token punctuation">{</span>
+   <span class="token keyword">return</span> lhs <span class="token operator">?</span> <span class="token keyword">try</span> <span class="token function">rhs</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span></code></pre>
+<p>现在你应该能够准确地分解它的作用：<code>&amp;&amp;</code>的右边是一个自动闭包，因此只有当左边的值为<code>true</code>时才会执行它。<code>rhs</code>被标记为会抛出异常(即使可能没有)，而整个函数被标记为<code>rethrow</code>，以便调用者仅在必要时才需要使用<code>try/catch</code>。</p>
+<p>我希望你能同意 <em>Swift</em> 的错误处理方法是非常漂亮的：你越深入研究它，你就越能欣赏它的精妙之处。</p>
+<h2 id="try-vs-try-vs-try"><a href="#try-vs-try-vs-try" class="headerlink" title="try vs try? vs try!"></a>try vs try? vs try!</h2><p><em>Swift</em> 的错误处理有三种形式，它们都有各自的用途。在调用被标记为<code>throws</code>函数时都会用到，但其含义有细微的不同：</p>
+<ol>
+<li>当使用<code>try</code>时，必须有一个<code>catch</code>块来处理发生的任何错误。</li>
+<li>当使用<code>try?</code>时，如果抛出任何错误，你调用的函数将自动返回<code>nil</code>。你不需要捕获它们，但是你需要知道你的返回值是可选的。</li>
+<li>当使用<code>try!</code>，如果抛出任何错误，该函数将使应用程序崩溃。</li>
+</ol>
+<p>我对它们进行了编号，因为这是你应该使用它们的顺序：到目前为止，通常<code>try</code>是最常见的，其行为就像我们目前看到的那样；<code>try?</code>是一种安全而有用的后备方法，如果使用得当，将大大提高代码的可读性；<code>try!</code>意思是“抛出错误不太可能——或者不太受欢迎——以至于我愿意接受崩溃”，这是不常见的。</p>
+<p>现在，你可能想知道为什么要<code>try!</code>甚至存在：如果你确定它不会抛出错误，那么为什么函数一开始就标记为<code>throws</code>呢？那么，考虑一下从应用程序包中读取文件的代码。如果文件不存在或不可读，从字符串内容加载文件可能会引发错误，但如果出现这种情况，则你的应用显然处于非常坏的状态——强制崩溃很可能是理想的结果，而不是允许用户继续使用损坏的应用。选择权在你。</p>
+<p>在这三种方法中，只有常规的<code>try</code>需要一个<code>do/catch</code>块，所以如果你正在寻找简洁的代码，你可能想要使用<code>try?</code>。我已经介绍过<code>try</code>了，<code>try!</code>和<code>try?</code>实际上是一样的，只是你得到的不是<code>nil</code>返回值，而是崩溃，所以我将重点在这里使用<code>try?</code>。</p>
+<p>用<code>try?</code>表示安全地展开其可选返回值，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">if</span> <span class="token keyword">let</span> savedText <span class="token operator">=</span> <span class="token keyword">try</span><span class="token operator">?</span> <span class="token function">String</span><span class="token punctuation">(</span>contentsOfFile<span class="token punctuation">:</span> <span class="token string">"saved.txt"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">loadText</span><span class="token punctuation">(</span>savedText<span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+   <span class="token function">showFirstRunScreen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>你也可以使用空值合并操作符<code>??</code>。若返回<code>nil</code>，则使用默认值，从而完全消除可选性：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> savedText <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">try</span><span class="token operator">?</span> <span class="token function">String</span><span class="token punctuation">(</span>contentsOfFile<span class="token punctuation">:</span> <span class="token string">"saved.txt"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">?</span><span class="token operator">?</span> <span class="token string">"Hello, world!"</span></code></pre>
+<p>在极少数情况下，我使用<code>try?</code>有点像 <em>UDP</em> ：试试这个，但我不在乎它是否失败。互联网背后最重要的两种协议是 <em>TCP</em> 和 <em>UDP<em>。</em>TCP</em> 保证所有的数据包都会到达，并且会一直尝试重新发送，直到某个时间过期；例如，它用于下载，因为如果缺少 <em>ZIP</em> 文件的一部分，那么就什么都没有了。</p>
+<p><em>UDP</em> 只发送一次所有的数据包，并希望是最好的：如果它们到达，很好；如果不是，就等到下一个到达。<em>UDP</em> 对于视频流之类的事情很有用，在视频流中，你不在乎是否丢失了一秒的实时视频流，更重要的是新视频不断出现。</p>
+<p>所以，<code>try?</code>可以像 <em>UDP</em> 一样使用：如果你不关心返回值是什么，而只想尝试做一些事情，那么<code>try?</code>适合你：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token number">_</span> <span class="token operator">=</span> <span class="token keyword">try</span><span class="token operator">?</span> string<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>toFile<span class="token punctuation">:</span> somePathHere<span class="token punctuation">,</span> atomically<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> encoding<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">.</span><span class="token builtin">Encoding</span><span class="token punctuation">.</span>utf8<span class="token punctuation">)</span></code></pre>
+<h2 id="断言-Assertions"><a href="#断言-Assertions" class="headerlink" title="断言(Assertions)"></a>断言(Assertions)</h2><p>断言允许你声明某些条件必须为真。这个条件由你决定，可以像你希望的那样复杂，但是如果它的计算结果为<code>false</code>，你的程序将立即停止。断言在 <em>Swift</em> 中被巧妙地设计，以至于阅读其源代码是一项有价值的练习。</p>
+<p>在 <em>Xcode</em> 中编写断言时，代码提示将为你提供两个选项：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token function">assert</span><span class="token punctuation">(</span>condition<span class="token punctuation">:</span> <span class="token builtin">Bool</span><span class="token punctuation">)</span>
+<span class="token function">assert</span><span class="token punctuation">(</span>condition<span class="token punctuation">:</span> <span class="token builtin">Bool</span><span class="token punctuation">,</span> message<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span></code></pre>
+<p>在第一个选项中，你需要提供要测试的条件；在第二个选项中，如果条件的计算结果为<code>false</code>，你还需要提供要显示的消息。在下面的代码中，第一个断言将计算为<code>true</code>，因此不会发生任何事情；在第二个断言中，它将失败，因为条件为<code>false</code>，因此将打印消息：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token function">assert</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token function">assert</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"Danger, Will Robinson: mathematics failure!"</span><span class="token punctuation">)</span></code></pre>
+<p>很明显，断言基本算法并没有多大用处，因此你通常会编写如下代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> success <span class="token operator">=</span> <span class="token function">runImportantOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">assert</span><span class="token punctuation">(</span>success <span class="token operator">==</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token string">"Important operation failed!"</span><span class="token punctuation">)</span></code></pre>
+<p>断言在编写复杂的应用程序时非常有用，因为你可以将它们分散到整个代码中，以确保一切正常。你可以想测试多少就测试多少，这意味着你的应用程序中出现了任何意想不到的状态——当你想知道某些变量是如何设置的？—— 在开发早期就被捕获。</p>
+<p>要了解断言如何工作，请查看 <em>Swift</em> 源代码中的实际类型签名：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">public</span> <span class="token keyword">func</span> <span class="token function">assert</span><span class="token punctuation">(</span><span class="token number">_</span> condition<span class="token punctuation">:</span> @<span class="token function">autoclosure</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Bool</span><span class="token punctuation">,</span> <span class="token number">_</span> message<span class="token punctuation">:</span> @<span class="token function">autoclosure</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span> <span class="token operator">=</span> <span class="token function">String</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> file<span class="token punctuation">:</span> <span class="token builtin">StaticString</span> <span class="token operator">=</span> #file<span class="token punctuation">,</span> line<span class="token punctuation">:</span> <span class="token builtin">UInt</span> <span class="token operator">=</span> #line<span class="token punctuation">)</span></code></pre>
+<p>最后两个参数是 <em>Swift</em> 编译器提供的默认值，你不太可能想要更改它们：<code>#file</code>替换为当前文件的名称，<code>#line</code>替换为触发断言的代码行号。这些参数以默认值的形式传入(而不是在函数中指定)，以便 <em>Swift</em> 使用调用站点的文件名和行号，而不是<code>assert()</code>中的某些行。</p>
+<p>前两个参数更有趣：条件参数和消息参数都使用<code>@autoclosure</code>，这意味着它们不会立即执行。这很重要，因为内部 <em>Swift</em> 只有在调试模式下才会执行断言。这意味着你可以在应用程序中断言数百次甚至数千次，但所有这些工作只有在调试时才能完成。当 <em>Swift</em> 编译器以 <em>Release</em> 模式运行时，将跳过此工作。</p>
+<p>这里是<code>assert()</code>的主体，直接来自 <em>Swift</em> 源代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">if</span> <span class="token function">_isDebugAssertConfiguration</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">if</span> <span class="token operator">!</span><span class="token function">_branchHint</span><span class="token punctuation">(</span><span class="token function">condition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> expected<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">_assertionFailed</span><span class="token punctuation">(</span><span class="token string">"assertion failed"</span><span class="token punctuation">,</span> <span class="token function">message</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> file<span class="token punctuation">,</span> line<span class="token punctuation">,</span> flags<span class="token punctuation">:</span> <span class="token function">_fatalErrorFlags</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>带下划线前缀的函数是内部函数，但是你应该能够猜到它们的作用：</p>
+<ul>
+<li><code>_isDebugAssertConfiguration()</code>如果未处于调试模式，则返回<code>false</code>。这就是在为发布而构建时导致断言消失的原因。</li>
+<li><code>!_branchHint(condition(),expected:true)</code>运行<code>@autoclosure</code>创建的条件闭包。它告诉编译器期望条件计算成功（大多数情况下应该是这样），这有助于优化代码。这只会影响调试，但有助于你的断言更快地运行。</li>
+<li>如果在调试模式下，调用<code>condition()</code>返回<code>false</code>，则调用<code>_assertionfailed()</code>终止程序。此时，将调用<code>message()</code>闭包以打印有用的错误。</li>
+</ul>
+<p><code>@autoclosure</code>的使用非常适合这种情况，因为只有在调试模式下才会运行它。但是你可能想知道为什么<code>message</code>参数也是一个自动闭包—它不只是一个字符串吗?这就是<code>assert()</code>变得非常聪明的地方：因为<code>message</code>是一个闭包，所以你可以在最终返回字符串之前运行任何其他代码，除非断言失败，否则不会调用任何代码。</p>
+<p>最常见的用法是在使用日志系统时：在将消息返回到<code>assert()</code>之前，消息闭包可以将错误写入日志。下面是一个简单的示例，它在返回消息之前将消息写到文件中—基本上只是一个传递，添加了一些额外的功能：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">saveError</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> file<span class="token punctuation">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> #file<span class="token punctuation">,</span> line<span class="token punctuation">:</span> <span class="token builtin">Int</span> <span class="token operator">=</span> #line<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span> <span class="token punctuation">{</span>
+   <span class="token number">_</span> <span class="token operator">=</span> <span class="token keyword">try</span><span class="token operator">?</span> message<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>toFile<span class="token punctuation">:</span> pathToDebugFile<span class="token punctuation">,</span> atomically<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> encoding<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">.</span><span class="token builtin">Encoding</span><span class="token punctuation">.</span>utf8<span class="token punctuation">)</span>
+   <span class="token keyword">return</span> message
+<span class="token punctuation">}</span>
+<span class="token function">assert</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token function">saveError</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> <span class="token string">"Fatal error!"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<h2 id="先决条件-Preconditions"><a href="#先决条件-Preconditions" class="headerlink" title="先决条件(Preconditions)"></a>先决条件(Preconditions)</h2><p>只有当应用程序在调试模式下运行时才会检查断言，这在开发时很有用，但在发布模式下会自动停用断言。如果你希望在发布模式下进行断言(请记住，失败会导致你的应用程序立即终止)，那么应该使用<code>precondition()</code>。</p>
+<p>它和<code>assert()</code>使用相同的参数，但编译方式不同：如果使用<code>-onone</code>或<code>-o</code>（无优化或标准优化）生成，则失败的先决条件将导致应用程序终止。如果使用<code>-ounchecked</code>（最快的优化级别）构建，则仅会忽略前提条件。如果你使用的是 <em>Xcode</em>，这意味着 <strong><em>Disable Safety Checks</em></strong>选项设置为 <strong><em>Yes</em></strong>。</p>
+<p>就像使用<code>try!</code>一样，有一个很好的理由让你可能想在发布模式下崩溃你的应用程序：如果某个东西出了致命的错误，表明你的应用程序处于不稳定、未知、甚至可能是危险的状态，那么与其继续下去，冒着严重数据丢失的风险，不如出手相救。</p>
+<p>在关于运算符重载的一章中，我对<code>*</code>运算符进行了修改，它允许我们将两个数组相乘：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token operator">*</span><span class="token punctuation">(</span>lhs<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">,</span> rhs<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+   <span class="token keyword">guard</span> lhs<span class="token punctuation">.</span><span class="token builtin">count</span> <span class="token operator">==</span> rhs<span class="token punctuation">.</span><span class="token builtin">count</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> lhs <span class="token punctuation">}</span>
+   <span class="token keyword">var</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span>index<span class="token punctuation">,</span> int<span class="token punctuation">)</span> <span class="token keyword">in</span> lhs<span class="token punctuation">.</span><span class="token function">enumerated</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      result<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>int <span class="token operator">*</span> rhs<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">return</span> result
+<span class="token punctuation">}</span></code></pre>
+<p>如您所见，该函数以一个<code>guard</code>开始，以确保两个数组的大小完全相同——如果不是，我们只返回左侧的操作数。在许多情况下，这是安全的编程，但也有可能，如果我们的程序最终有两个不同大小的数组，那么严重的问题已经发生，我们应该停止执行。在这种情况下，使用<code>precondition()</code>可能更好：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token operator">*</span><span class="token punctuation">(</span>lhs<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">,</span> rhs<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+   <span class="token function">precondition</span><span class="token punctuation">(</span>lhs<span class="token punctuation">.</span><span class="token builtin">count</span> <span class="token operator">==</span> rhs<span class="token punctuation">.</span><span class="token builtin">count</span><span class="token punctuation">,</span> <span class="token string">"Arrays were not the same size"</span><span class="token punctuation">)</span>
+   <span class="token keyword">var</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span>index<span class="token punctuation">,</span> int<span class="token punctuation">)</span> <span class="token keyword">in</span> lhs<span class="token punctuation">.</span><span class="token function">enumerated</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      result<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>int <span class="token operator">*</span> rhs<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">return</span> result
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> c <span class="token operator">=</span> a <span class="token operator">*</span> b</code></pre>
+<p>记住，启用<code>-Ounchecked</code>将有效地禁用你的先决条件，但它也禁用其他边界检查——这就是为什么它这么快的原因!</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《第五章 错误处理(Errors)》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/06/pro-swift-yi-wen/chapter5-errors/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                影痕
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'f3f4b0e75a31c33690a1',
+        clientSecret: 'c7a167d236ca9107a6728fcc08468b5237eabe4f',
+        repo: 'BlogComments',
+        owner: 'LucioLee',
+        admin: ["LucioLee"],
+        id: '2019-09-06T21-59-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/09/16/pro-swift-yi-wen/chapter6-functional-programming/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="第六章 函数式编程(Functional Programming)">
+                        
+                        <span class="card-title">第六章 函数式编程(Functional Programming)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            函数式编程
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Pro-Swift/" class="post-category" target="_blank">
+                                    Pro Swift
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Swift/" target="_blank">
+                        <span class="chip bg-color">Swift</span>
+                    </a>
+                    
+                    <a href="/tags/Pro-Swift/" target="_blank">
+                        <span class="chip bg-color">Pro Swift</span>
+                    </a>
+                    
+                    <a href="/tags/函数式编程/" target="_blank">
+                        <span class="chip bg-color">函数式编程</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/06/pro-swift-yi-wen/chapter4-functions/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="第四章 函数(Functions)">
+                        
+                        <span class="card-title">第四章 函数(Functions)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            可变参数函数、操作符重载、修改现有操作符、自定义操作符
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Pro-Swift/" class="post-category" target="_blank">
+                                    Pro Swift
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Swift/" target="_blank">
+                        <span class="chip bg-color">Swift</span>
+                    </a>
+                    
+                    <a href="/tags/Pro-Swift/" target="_blank">
+                        <span class="chip bg-color">Pro Swift</span>
+                    </a>
+                    
+                    <a href="/tags/操作符重载/" target="_blank">
+                        <span class="chip bg-color">操作符重载</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('1')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+
+        newdiv.innerHTML += '<br />'
+            + '来源: Li&apos;s Note<br />'
+            + '作者: 影痕<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归@影痕所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站版权归&copy;<a href="https://luciolee.github.io/" target="_blank">影痕</a>所有.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">55.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/LucioLee/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lixinxin990467229@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=990467229" class="tooltipped" data-tooltip="QQ联系我: 990467229" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

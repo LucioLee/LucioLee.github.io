@@ -1,0 +1,992 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="第六章 函数式编程(Functional Programming), iOS">
+    <meta name="description" content="如果需要每个元素的索引及其值，可以使用enumerated()方法遍历数组：
+for (index, element) in loggerContent.enumerated() {
+   logfiles[&#34;logfile\(index)">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>第六章 函数式编程(Functional Programming) | Li&#39;s Note</title>
+    <link rel="icon" type="image/png" href="https://cdn.kongyintianxia.com/feedback_0_evYm8e_20190906.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.kongyintianxia.com/feedback_0_evYm8e_20190906.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Li's Note</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.kongyintianxia.com/feedback_0_evYm8e_20190906.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Li's Note</div>
+        <div class="logo-desc">
+            
+            iOS 程序猿一枚~
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        第六章 函数式编程(Functional Programming)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Swift/" target="_blank">
+                                <span class="chip bg-color">Swift</span>
+                            </a>
+                        
+                            <a href="/tags/Pro-Swift/" target="_blank">
+                                <span class="chip bg-color">Pro Swift</span>
+                            </a>
+                        
+                            <a href="/tags/函数式编程/" target="_blank">
+                                <span class="chip bg-color">函数式编程</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Pro-Swift/" class="post-category" target="_blank">
+                                Pro Swift
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-09-16
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        4.8k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        17 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>如果需要每个元素的索引及其值，可以使用<code>enumerated()</code>方法遍历数组：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">for</span> <span class="token punctuation">(</span>index<span class="token punctuation">,</span> element<span class="token punctuation">)</span> <span class="token keyword">in</span> loggerContent<span class="token punctuation">.</span><span class="token function">enumerated</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   logfiles<span class="token punctuation">[</span><span class="token string">"logfile<span class="token interpolation"><span class="token delimiter variable">\(</span>index<span class="token delimiter variable">)</span></span>.txt"</span><span class="token punctuation">]</span> <span class="token operator">=</span> element
+<span class="token punctuation">}</span></code></pre>
+<p>– <em>Veronica Ray (@nerdonica), software engineer at LinkedIn</em></p>
+<h2 id="什么是函数式编程？"><a href="#什么是函数式编程？" class="headerlink" title="什么是函数式编程？"></a>什么是函数式编程？</h2><p>取决于你来自哪里，函数式编程可能是一种非常正常的代码编码方式，它可能是某种偷偷溜出大学校园的学术工具，也可能是你用来吓唬孩子睡觉的东西。事实上，函数式编程的使用范围很广，从“我基本上在阅读代数”到“我主要使用面向对象的代码，以及一些我需要的函数式技术”。</p>
+<p>我读过很多关于函数式编程的教程，这些教程的本意是好的，但最终可能弊大于利。你看，函数式编程并不难用实际的方法来学习和使用，但是你也可以用 <strong><em>monad</em></strong> 和 <strong><em>functor</em></strong> 来压倒人们。我的目的是教会你函数式编程的好处，同时也减少你不太可能从中受益的部分。我不道歉：这整本书都是教你如何立即动手改进编码，而不是解释什么是引用透明性。</p>
+<p>我想用 <strong>Andy Matuschak</strong> 所说的“轻量级接触”来教你一些函数式编程。这意味着我们将集中精力寻找简单、小的好处，您可以立即理解和使用。<strong>Andy</strong> 是一位经验丰富的函数式编程人员，但他在学习方法方面也很务实——我希望他不会对我简化(甚至抛弃)这么多理论太反感！</p>
+<p>在讨论函数代码之前，我想让你大致了解一下为什么我们可能要更改当前的工作方式。你可能在过去广泛地使用过面向对象：你已经创建了类，从这些类生成子类，添加了方法和属性，等等。如果你已经阅读了关于引用和值类型的章节，你还将知道对象是引用类型，这意味着属性可以由它的任何多个所有者进行更改。</p>
+<p>我们认为面向对象很简单，因为这是我们所知道的。如果我告诉你<code>PoodlePoodle</code>继承自<code>Dog</code>，具有<code>barkVolume</code>属性和<code>biteStrength</code>属性，以及<code>barkWorseThanBite()</code>方法，你马上就会明白这意味着什么。但这并不简单。它很复杂：一个“简单”的类混合了状态、功能、继承等等，所以你需要在脑子里记住很多东西才能跟上。</p>
+<p>函数式编程——或者至少是我将在这里使用的稍微简化的定义——可以极大地简化代码。首先，这将导致问题，因为你正在有效地对抗面向对象的肌肉记忆：你通过创建一个新类来解决每个问题的本能需要暂时搁置，至少目前是这样。</p>
+<p>相反，我们将应用 <em>5</em> 条原则，帮助你在不使用代数的情况下实现函数式编程的好处。</p>
+<p>首先，函数是一等数据类型。这意味着它们可以像整数和字符串一样被创建、复制和传递。其次，因为函数是一等数据类型，所以它们可以用作其他函数的参数。第三，为了使我们的函数能够以不同的方式重用，当给定特定的输入时，它们应该总是返回相同的输出，并且不会产生任何副作用。第四，由于函数总是为某些给定的输入返回相同的输出，所以我们应该使用不可变的数据类型，而不是使用函数来更改可变变量。第五，也是最后一点，因为我们的函数不会产生副作用，而且变量都是不可变的，所以我们可以减少我们在程序中跟踪的状态的数量——并且常常可以完全消除它。</p>
+<p>我知道一下子要理解很多东西，所以让我试着把每一个都分解得更详细些。</p>
+<p>你应该已经知道函数在 <em>Swift</em> 中是一等数据类型——毕竟，你可以复制闭包并传递它们。这是第一条。接下来，将函数作为参数传递给其他函数也是你可能已经做过的事情，比如使用闭包调用<code>sort()</code>。你可能会遇到“高阶函数”这个名称，它是为接受另一个函数作为参数的函数指定的名称。</p>
+<p>当我们编写的函数总是为给定的输入生成相同的输出时，事情就变得有点复杂了——但有趣得多。这意味着，如果你编写一个函数<code>lengthOf(string:)</code>，它接受一个字符串数组并根据每个字符串的长度返回一个整数数组，那么当给定<code>["Taylor", "Paul", "Adele"]</code>时，该函数将返回<code>[6, 4, 5]</code>。不管程序中发生了什么，也不管函数被调用的频率：相同的输入必须返回相同的输出。</p>
+<p>因此，函数不应该产生可能影响其他函数的副作用。例如，如果我们有另一个函数<code>fetchSystemTime()</code>返回时间，那么调用<code>fetchSystemTime()</code>不会影响<code>lengthOf(strings:)</code>的结果。对于给定的输入，总是返回相同的结果而不会产生副作用的函数通常称为纯函数。我想这就使得所有的函数都不纯了，你不想写很脏很脏的函数，对吧?</p>
+<p>关于纯函数的混淆的一个来源是围绕<strong>副作用</strong>的含义。如果一个函数做了写磁盘之类的事情，这是一个副作用还是实际上只是函数的要点？关于这个有很多争论，我就不深入了。相反，我要说的是，函数式程序员应该渴望创建纯函数，但是当涉及到关键问题时，应该优先考虑已知输入的可预测输出，而不是避免副作用。也就是说，如果你想编写一个将一些数据写入磁盘的函数(一个副作用？实际效果如何？你想怎么调用就怎么调用！），然后继续，但至少要确保在给定相同的数据时，它所写的内容完全相同。</p>
+<p>我已经讨论了不可变数据类型和值(而不是引用)的重要性，所以我不会再讨论它们，只是说类在函数代码中就像在血友病公约中刺猬一样受欢迎。</p>
+<p>最后，状态的缺乏是很棘手的，因为它已经深入到对象定向中。“状态”是由程序存储的一系列值，这并不总是一件坏事——它包括缓存一些东西来提高性能，以及一些重要的东西，比如用户设置。当在函数中使用这种状态时，问题就出现了，因为这意味着函数不再是可预测的。</p>
+<p>使用<code>lengthOf(strings:)</code>的例子，考虑如果我们有一个名为<code>returnLengthsAsBinary</code>的布尔值设置会发生什么——当给定<code>["Taylor", "Paul", "Adele"]</code>时，该函数可能返回<code>[6, 4, 5]</code>，也可能返回<code>['110', '10', '101']</code>，这取决于一个外部的布尔值。要务实，不要不惜任何代价避免状态，但绝不要让它污染你的函数代码，并尽可能地减少它的使用。</p>
+<p>当这五个原则结合在一起时，你会得到许多即时的、有价值的好处。当你编写产生可预测输出的函数时，你可以为它们编写简单的单元测试。当你使用不可变的值类型而不是引用类型时，你将删除应用程序中不可预料的依赖项，并使你的代码更容易推理。当你构建一些小的、可组合的功能，这些功能可以与高阶功能结合，并以多种方式重新使用，你可以通过将许多小的、简单的部件组合在一起来构建功能强大的应用程序。</p>
+<p>注意：我将在后面的章节中提到这五个原则。我不想一遍又一遍地重复，我只想说希望你能记住这五个函数原则：</p>
+<ul>
+<li>一等数据类型</li>
+<li>高阶函数</li>
+<li>纯函数</li>
+<li>不变性</li>
+<li>减少状态</li>
+</ul>
+<p>好吧，理论足够了。我希望我已经成功地说服了你，函数式编程可以为每个人提供一些东西，即使你只从下面几节中获取一些概念，这也是一个很大的改进。</p>
+<h2 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h2><p>让我们从函数编程的最简单的<code>map()</code>方法开始。这将从容器中取出一个值，对其应用一个函数，然后将该函数的结果放回返回给你的新容器中。<em>Swift</em> 的数组、字典和集合都内置了<code>map()</code>方法，它通常用于遍历数组中的每一项，同时将函数应用于每个值。</p>
+<p>我已经提到过一个<code>lengthOf(string:)</code>函数，它接受一个字符串数组并根据输入字符串的大小返回一个整数数组。你可以这样写：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">lengthOf</span><span class="token punctuation">(</span>strings<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+   <span class="token keyword">var</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token keyword">for</span> string <span class="token keyword">in</span> strings <span class="token punctuation">{</span>
+      result<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>string<span class="token punctuation">.</span>characters<span class="token punctuation">.</span><span class="token builtin">count</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">return</span> result
+<span class="token punctuation">}</span></code></pre>
+<p>该函数接受一个字符串数组，并基于这些字符串返回一个整数数组。这是<code>map()</code>的完美用法，实际上我们可以用这个替换所有代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">lengthOf</span><span class="token punctuation">(</span>strings<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+   <span class="token keyword">return</span> strings<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token punctuation">{</span> $<span class="token number">0</span><span class="token punctuation">.</span>characters<span class="token punctuation">.</span><span class="token builtin">count</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>很明显，函数式方法更短，但它的好处不仅仅是编写更少的代码。相反，函数式版本向编译器传达了更重要的含义：现在很明显，我们想要对数组中的每一项应用一些代码，而要高效地实现这一点，取决于 <em>Swift</em> 。就我们所知，<em>Swift</em> 可以并行化你的闭包，这样它可以一次处理 <em>4</em> 项，或者它可以以比从头到尾更有效的顺序处理这些项。</p>
+<p>使用<code>map()</code>也向其他程序员表明了我们的意图：它将遍历数组中的每一项并对其应用一个函数。使用传统的<code>for</code>循环，你可能会在执行到一半的时候有一个中断—<code>map()</code>不可能做到这一点—而找到这个中断的惟一方法是读取所有代码。如果你遵循我已经列出的 <em>5</em> 条函数原则(特别是使用纯函数和避免状态)，那么阅读你代码的人就会立即知道<code>map()</code>使用的闭包不会试图存储全局状态。</p>
+<p>这种简化是很重要的，这是一个关注点的改变。<em>Javier Soto</em> — <em>Twitter</em> 著名的功能支持者和敏捷黑客—这样总结<code>map()</code>的用处：它允许我们表达我们想要实现什么，而不是如何实现。也就是说，我们只需说这是我们想对这个数组中的项做的事情，这比手工编写循环和手工创建数组更容易读、写和维护。</p>
+<p>另一件事：注意类型签名没有发生变化。这意味着我们编写<code>func lengthOf(String: [String]) -&gt; [Int]</code>，不管我们是否在内部使用函数方法。这意味着你可以更改函数的内部结构，以采用函数方法，而不影响它们与应用程序其余部分的交互方式——你可以一点一点地更新代码，而不是一次更新所有代码。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>为了帮助你更好地使用<code>map()</code>，这里有一些示例。</p>
+<p>这段代码将字符串转换为大写：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> fruits <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Apple"</span><span class="token punctuation">,</span> <span class="token string">"Cherry"</span><span class="token punctuation">,</span> <span class="token string">"Orange"</span><span class="token punctuation">,</span> <span class="token string">"Pineapple"</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> upperFruits <span class="token operator">=</span> fruits<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token punctuation">{</span> $<span class="token number">0</span><span class="token punctuation">.</span><span class="token function">uppercased</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span></code></pre>
+<p>该代码段将整型表示的得分数组转换为格式化的字符串：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> scores <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">,</span> <span class="token number">85</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> formatted <span class="token operator">=</span> scores<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token punctuation">{</span> <span class="token string">"Your score was <span class="token interpolation"><span class="token delimiter variable">\(</span>$<span class="token number">0</span><span class="token delimiter variable">)</span></span>"</span> <span class="token punctuation">}</span></code></pre>
+<p>这两个代码段使用三目运算符创建字符串数组，根据特定的条件匹配每个项。第一段代码检查在 <em>85</em> 分以上的得分，第二段检查在 <em>45 - 55</em>  (含 <em>45 - 55</em> )范围内的位置：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> scores <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">,</span> <span class="token number">85</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> passOrFail <span class="token operator">=</span> scores<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token punctuation">{</span> $<span class="token number">0</span> <span class="token operator">></span> <span class="token number">85</span> <span class="token operator">?</span> <span class="token string">"Pass"</span> <span class="token punctuation">:</span> <span class="token string">"Fail"</span> <span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> position <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> averageResults <span class="token operator">=</span> position<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token punctuation">{</span> <span class="token number">45</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">55</span> <span class="token operator">~</span><span class="token operator">=</span> $<span class="token number">0</span>  <span class="token operator">?</span> <span class="token string">"Withinaverage"</span> <span class="token punctuation">:</span> <span class="token string">"Outside average"</span> <span class="token punctuation">}</span></code></pre>
+<p>最后，这个例子使用<code>sqrt()</code>函数来计算数字的平方根：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">import</span> <span class="token builtin">Foundation</span>
+<span class="token keyword">let</span> numbers<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">Double</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">36</span><span class="token punctuation">,</span> <span class="token number">49</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> result <span class="token operator">=</span> numbers<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>sqrt<span class="token punctuation">)</span></code></pre>
+<p>如你所见，<code>map()</code>之所以叫这个名称，是因为它指定了从一个数组到另一个数组的映射。也就是说，如果你给它传递一个数组<code>[a, b, c]</code>和函数<code>f()</code>， <em>Swift</em> 会给你等价的<code>[f(a),f(b), f(c)]</code>。</p>
+<h3 id="Optional-map"><a href="#Optional-map" class="headerlink" title="Optional map"></a>Optional map</h3><p>重复我前面所说的，<code>map()</code>从容器中取出一个值，应用一个函数，然后将该函数的结果放回一个返回给你的新容器中。到目前为止，我们一直在使用数组，但是如果你仔细想想， <strong><em>Optional</em></strong> 其实就是一个存放值的容器。它们的定义如下：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">enum</span> <span class="token builtin">Optional</span><span class="token operator">&lt;</span><span class="token builtin">Wrapped</span><span class="token operator">></span> <span class="token punctuation">{</span>
+   <span class="token keyword">case</span> <span class="token keyword">none</span>
+   <span class="token keyword">case</span> <span class="token function">some</span><span class="token punctuation">(</span><span class="token builtin">Wrapped</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>因为它们只是单个值的简单容器，所以我们也可以在 <em>Optional</em> 上使用<code>map()</code>。原理是一样的：从容器中取出值，应用函数，然后再将值放回容器中。</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> i<span class="token punctuation">:</span> <span class="token builtin">Int</span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token number">10</span>
+<span class="token keyword">let</span> j <span class="token operator">=</span> i<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token punctuation">{</span> $<span class="token number">0</span> <span class="token operator">*</span> <span class="token number">2</span> <span class="token punctuation">}</span>
+<span class="token function">print</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span></code></pre>
+<p>这将打印 <strong><em>Optional(20)</em></strong> ：值 <em>10</em> 从 <em>Optional</em> 容器中取出，乘以 <em>2</em> ，然后放回 <em>Optional</em> 容器中。如果<code>i</code>是<code>nil</code>，<code>map()</code>只会返回<code>nil</code>。此行为使<code>map()</code>在操作可选值时非常有用，特别是与空值合并运算符组合时。</p>
+<p>举个例子，考虑下面的函数：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">fetchUsername</span><span class="token punctuation">(</span>id<span class="token punctuation">:</span> <span class="token builtin">Int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">String</span><span class="token operator">?</span> <span class="token punctuation">{</span>
+   <span class="token keyword">if</span> id <span class="token operator">==</span> <span class="token number">1989</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token string">"Taylor Swift"</span>
+   <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token constant">nil</span> 
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>它返回一个可选字符串，因此我们要么返回 <code>Taylor Swift</code> 要么返回<code>nil</code>。如果我们想打印一条欢迎信息——但只有当我们得到一个用户名时——那么可选的<code>map</code>是完美的选择：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">var</span> username<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token function">fetchUsername</span><span class="token punctuation">(</span>id<span class="token punctuation">:</span> <span class="token number">1989</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> formattedUsername <span class="token operator">=</span> username<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token punctuation">{</span> <span class="token string">"Welcome, <span class="token interpolation"><span class="token delimiter variable">\(</span>$<span class="token number">0</span><span class="token delimiter variable">)</span></span>!"</span> <span class="token punctuation">}</span> <span class="token operator">?</span><span class="token operator">?</span> <span class="token string">"Unknown user"</span>
+<span class="token function">print</span><span class="token punctuation">(</span>formattedUsername<span class="token punctuation">)</span></code></pre>
+<p>要用非函数式的方法来写，另一种方法要长得多：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> username <span class="token operator">=</span> <span class="token function">fetchUsername</span><span class="token punctuation">(</span>id<span class="token punctuation">:</span> <span class="token number">1989</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> formattedUsername<span class="token punctuation">:</span> <span class="token builtin">String</span>
+<span class="token keyword">if</span> <span class="token keyword">let</span> username <span class="token operator">=</span> username <span class="token punctuation">{</span>
+   formattedUsername <span class="token operator">=</span> <span class="token string">"Welcome, <span class="token interpolation"><span class="token delimiter variable">\(</span>username<span class="token delimiter variable">)</span></span>!"</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+   formattedUsername <span class="token operator">=</span> <span class="token string">"Unknown user"</span>
+<span class="token punctuation">}</span>
+<span class="token function">print</span><span class="token punctuation">(</span>formattedUsername<span class="token punctuation">)</span></code></pre>
+<p>我们可以使用一个更短的替代方法，但它涉及到三目运算符和强制展开：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> username <span class="token operator">=</span> <span class="token function">fetchUsername</span><span class="token punctuation">(</span>id<span class="token punctuation">:</span> <span class="token number">1989</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> formattedUsername <span class="token operator">=</span> username <span class="token operator">!=</span> <span class="token constant">nil</span> <span class="token operator">?</span> <span class="token string">"Welcome, <span class="token interpolation"><span class="token delimiter variable">\(</span>username<span class="token operator">!</span><span class="token delimiter variable">)</span></span>!"</span> <span class="token punctuation">:</span> <span class="token string">"Unknown user"</span>
+<span class="token function">print</span><span class="token punctuation">(</span>formattedUsername<span class="token punctuation">)</span></code></pre>
+<h3 id="forEach"><a href="#forEach" class="headerlink" title="forEach"></a>forEach</h3><p><code>map()</code>有一个名为<code>forEach()</code>的紧密关系，它也遍历数组并对每个项执行一个函数。主要的区别在于返回值：<code>map()</code>返回一个新的项数组，而<code>forEach()</code>根本不返回任何项——这只是循环每个项的函数方法。</p>
+<p>这为编译器和代码的读者提供了更多的信息：通过使用<code>forEach()</code>，你清楚地表明你没有操纵数组的内容，这使得 <em>Swift</em> 优化器可以做得更好。</p>
+<p>除了返回值外，<code>forEach()</code>与<code>map()</code>使用相同：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token punctuation">[</span><span class="token string">"Taylor"</span><span class="token punctuation">,</span> <span class="token string">"Paul"</span><span class="token punctuation">,</span> <span class="token string">"Adele"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>forEach <span class="token punctuation">{</span> <span class="token function">print</span><span class="token punctuation">(</span>$<span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">}</span></code></pre>
+<p><code>forEach()</code>和<code>map()</code>之间还有一个不同之处，即执行顺序：<code>forEach()</code>保证按照数组的顺序遍历数组中的元素，而<code>map()</code>可以按照它喜欢的任何顺序执行。</p>
+<p>在幕后，<code>forEach()</code>实际上可以归结为一个常规的<code>for-in</code>循环——它没有什么特别之处。下面是<code>forEach()</code>的内部 <em>Swift</em> 源代码，直接取自 <em>Apple</em> ：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">public</span> <span class="token keyword">func</span> <span class="token function">forEach</span><span class="token punctuation">(</span><span class="token number">_</span> body<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token builtin">Iterator</span><span class="token punctuation">.</span><span class="token builtin">Element</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span> <span class="token keyword">rethrows</span> <span class="token punctuation">{</span>
+   <span class="token keyword">for</span> element <span class="token keyword">in</span> <span class="token keyword">self</span> <span class="token punctuation">{</span>
+      <span class="token keyword">try</span> <span class="token function">body</span><span class="token punctuation">(</span>element<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="flatMap"><a href="#flatMap" class="headerlink" title="flatMap()"></a>flatMap()</h2><p>我不打算骗你，<code>flatMap()</code>一开始看起来很吓人。我把它放在这里，直接跟在令人惊讶的简单和有用的<code>map()</code>函数后面，因为这两个函数是紧密相关的，而不是因为我想用<code>flatMap()</code>让你在函数式生涯的早期感到震惊！</p>
+<p>如你所见，<code>map()</code>从容器(如数组)中取出一个项，对其应用一个函数，然后将其放回容器中。最直接的用例是数组，但是 <strong><em>Optional</em></strong> 也可以。</p>
+<p>当数组包含数组时，即数组的数组，你可以访问<code>join()</code>方法的一个版本，该方法将数组的数组转换为单个数组，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> joined <span class="token operator">=</span> <span class="token function">Array</span><span class="token punctuation">(</span>numbers<span class="token punctuation">.</span><span class="token function">joined</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// [1, 2, 3, 4, 5, 6]</span></code></pre>
+<p>因此，<code>join()</code>将数组复杂度降低了一层：通过连接项，二维数组变成了一维数组。</p>
+<p><code>flatMap()</code>函数是在一个调用中有效地组合使用<code>map()</code>和<code>join()</code>，按这个顺序。它使用你提供的函数将数组 <em>A</em> 中的项映射到数组 <em>B</em> 中，然后连接结果。当你记住数组和 <strong><em>Optional</em></strong> 都是容器时，这就变得很有价值了，因此<code>flatMap()</code>能够删除一个层级的容器确实非常受欢迎。</p>
+<p>首先，让我们看看我们的朋友<code>map()</code>：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> albums<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">String</span><span class="token operator">?</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Fearless"</span><span class="token punctuation">,</span> <span class="token constant">nil</span><span class="token punctuation">,</span> <span class="token string">"Speak Now"</span><span class="token punctuation">,</span> <span class="token constant">nil</span><span class="token punctuation">,</span> <span class="token string">"Red"</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> result <span class="token operator">=</span> albums<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token punctuation">{</span> $<span class="token number">0</span> <span class="token punctuation">}</span>
+<span class="token function">print</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<p>使用<code>$0</code>映射只意味着“返回现有值”，因此代码将打印以下内容：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token punctuation">[</span><span class="token function">Optional</span><span class="token punctuation">(</span><span class="token string">"Fearless"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">nil</span><span class="token punctuation">,</span> <span class="token function">Optional</span><span class="token punctuation">(</span><span class="token string">"Speak Now"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">nil</span><span class="token punctuation">,</span> <span class="token function">Optional</span><span class="token punctuation">(</span><span class="token string">"Red"</span><span class="token punctuation">)</span><span class="token punctuation">]</span></code></pre>
+<p>这是很多的可选值，一些<code>nil</code>分布其中。切换到<code>flatMap()</code>而不是<code>map()</code>可以帮助：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> albums<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">String</span><span class="token operator">?</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Fearless"</span><span class="token punctuation">,</span> <span class="token constant">nil</span><span class="token punctuation">,</span> <span class="token string">"Speak Now"</span><span class="token punctuation">,</span> <span class="token constant">nil</span><span class="token punctuation">,</span> <span class="token string">"Red"</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> result <span class="token operator">=</span> albums<span class="token punctuation">.</span>flatMap <span class="token punctuation">{</span> $<span class="token number">0</span> <span class="token punctuation">}</span>
+<span class="token function">print</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<p>只需将<code>map { $0 }</code>更改为<code>flatMap { $0 }</code>，结果就会发生显著变化：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token punctuation">[</span><span class="token string">"Fearless"</span><span class="token punctuation">,</span> <span class="token string">"Speak Now"</span><span class="token punctuation">,</span> <span class="token string">"Red"</span><span class="token punctuation">]</span></code></pre>
+<p>可选值没有了，<code>nil</code>也被移除——完美！</p>
+<p>这种魔力的原因在于<code>flatMap()</code>的返回值：<code>map()</code>将保留它处理的项的可选性，而<code>flatMap()</code>将删除它。因此，在下面的代码中，<code>mapResult</code>的类型是<code>[String?]</code>，<code>flatMapResult</code>类型为<code>[String]</code>：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> mapResult <span class="token operator">=</span> albums<span class="token punctuation">.</span><span class="token builtin">map</span> <span class="token punctuation">{</span> $<span class="token number">0</span> <span class="token punctuation">}</span>
+<span class="token keyword">let</span> flatMapResult <span class="token operator">=</span> albums<span class="token punctuation">.</span>flatMap <span class="token punctuation">{</span> $<span class="token number">0</span> <span class="token punctuation">}</span></code></pre>
+<h3 id="Optional-flat-map"><a href="#Optional-flat-map" class="headerlink" title="Optional flat map"></a>Optional flat map</h3><p>如果<code>flatMap()</code>的用处还不是很清楚，请跟我来！让我们再来看看这个例子：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> albums<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">String</span><span class="token operator">?</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Fearless"</span><span class="token punctuation">,</span> <span class="token constant">nil</span><span class="token punctuation">,</span> <span class="token string">"Speak Now"</span><span class="token punctuation">,</span> <span class="token constant">nil</span><span class="token punctuation">,</span> <span class="token string">"Red"</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> result <span class="token operator">=</span> albums<span class="token punctuation">.</span>flatMap <span class="token punctuation">{</span> $<span class="token number">0</span> <span class="token punctuation">}</span>
+<span class="token function">print</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span></code></pre>
+<p><code>albums</code>数组的类型是<code>[string?]</code>，因此它包含一个可选字符串数组。在这里使用<code>flatmap()</code>去掉了可选性，但实际上这只是连接可选容器的效果——它不做任何类型的映射转换。</p>
+<p>现在，<code>flatmap()</code>变得非常棒：因为连接发生在映射之后，你可以有效地说“对这些项做一些有趣的事情，然后删除返回<code>nil</code>的任何项。”</p>
+<p>举个实际的例子，假设有一个学校成绩计算器：学生被要求输入各种考试的分数，它将输出他们的估计成绩。这需要将用户输入的数字转换为整数，这是有问题的，因为它们可能出错或输入无意义的数字。因此，从字符串创建一个整数将返回一个可选整数——如果输入是“Fish”，则返回<code>nil</code>; 如果输入是“100”，则返回<code>100</code>。</p>
+<p>这对于<code>flatMap()</code>来说是一个完美的问题：我们可以取一个像<code>["100"，"90"，"Fish"， "85"]</code>这样的数组，映射每个值，将其转换为一个可选的整数，然后加入得到的数组，删除可选性和任何无效的值：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> scores <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"100"</span><span class="token punctuation">,</span> <span class="token string">"90"</span><span class="token punctuation">,</span> <span class="token string">"Fish"</span><span class="token punctuation">,</span> <span class="token string">"85"</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> flatMapScores <span class="token operator">=</span> scores<span class="token punctuation">.</span>flatMap <span class="token punctuation">{</span> <span class="token function">Int</span><span class="token punctuation">(</span>$<span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token function">print</span><span class="token punctuation">(</span>flatMapScores<span class="token punctuation">)</span></code></pre>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《第六章 函数式编程(Functional Programming)》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/16/pro-swift-yi-wen/chapter6-functional-programming/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                影痕
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'f3f4b0e75a31c33690a1',
+        clientSecret: 'c7a167d236ca9107a6728fcc08468b5237eabe4f',
+        repo: 'BlogComments',
+        owner: 'LucioLee',
+        admin: ["LucioLee"],
+        id: '2019-09-16T18-25-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/09/30/rxswift-yi-wen/chapter1-hello-rxswift/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="第一章 Hello, RxSwift!">
+                        
+                        <span class="card-title">第一章 Hello, RxSwift!</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            RxSwift是一个库，通过使用可观察序列和函数式操作符来组合异步和基于事件的代码，允许通过调度程序进行参数化执行。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Swift响应式编程/" class="post-category" target="_blank">
+                                    Swift响应式编程
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/响应式编程/" target="_blank">
+                        <span class="chip bg-color">响应式编程</span>
+                    </a>
+                    
+                    <a href="/tags/RxSwift/" target="_blank">
+                        <span class="chip bg-color">RxSwift</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/06/pro-swift-yi-wen/chapter5-errors/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="第五章 错误处理(Errors)">
+                        
+                        <span class="card-title">第五章 错误处理(Errors)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            错误处理、错误传递、断言、先决条件
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Pro-Swift/" class="post-category" target="_blank">
+                                    Pro Swift
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Swift/" target="_blank">
+                        <span class="chip bg-color">Swift</span>
+                    </a>
+                    
+                    <a href="/tags/Pro-Swift/" target="_blank">
+                        <span class="chip bg-color">Pro Swift</span>
+                    </a>
+                    
+                    <a href="/tags/错误处理/" target="_blank">
+                        <span class="chip bg-color">错误处理</span>
+                    </a>
+                    
+                    <a href="/tags/断言/" target="_blank">
+                        <span class="chip bg-color">断言</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('1')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+
+        newdiv.innerHTML += '<br />'
+            + '来源: Li&apos;s Note<br />'
+            + '作者: 影痕<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归@影痕所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站版权归&copy;<a href="https://luciolee.github.io/" target="_blank">影痕</a>所有.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">55.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/LucioLee/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lixinxin990467229@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=990467229" class="tooltipped" data-tooltip="QQ联系我: 990467229" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,1238 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="第四章 函数(Functions), iOS">
+    <meta name="description" content="当编写代码在两个数字之间进行插值时，很容易默认为线性插值。然而，在两个值之间平稳过渡通常会更好。所以我的建议是避免步进，并使用函数(如smooterstep())进行插值：
+func smootherStep(value: CGFloat)">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>第四章 函数(Functions) | Li&#39;s Note</title>
+    <link rel="icon" type="image/png" href="https://cdn.kongyintianxia.com/feedback_0_evYm8e_20190906.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.kongyintianxia.com/feedback_0_evYm8e_20190906.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Li's Note</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.kongyintianxia.com/feedback_0_evYm8e_20190906.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Li's Note</div>
+        <div class="logo-desc">
+            
+            iOS 程序猿一枚~
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        第四章 函数(Functions)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Swift/" target="_blank">
+                                <span class="chip bg-color">Swift</span>
+                            </a>
+                        
+                            <a href="/tags/Pro-Swift/" target="_blank">
+                                <span class="chip bg-color">Pro Swift</span>
+                            </a>
+                        
+                            <a href="/tags/操作符重载/" target="_blank">
+                                <span class="chip bg-color">操作符重载</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Pro-Swift/" class="post-category" target="_blank">
+                                Pro Swift
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-09-06
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        8.9k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        33 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>当编写代码在两个数字之间进行插值时，很容易默认为线性插值。然而，在两个值之间平稳过渡通常会更好。所以我的建议是避免步进，并使用函数(如<code>smooterstep()</code>)进行插值：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">smootherStep</span><span class="token punctuation">(</span>value<span class="token punctuation">:</span> <span class="token builtin">CGFloat</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">CGFloat</span> <span class="token punctuation">{</span>
+   <span class="token keyword">let</span> x <span class="token operator">=</span> value <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token punctuation">:</span> value <span class="token operator">></span> <span class="token number">1</span> <span class="token operator">?</span> <span class="token number">1</span> <span class="token punctuation">:</span> value
+   <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">6</span> <span class="token operator">-</span> <span class="token number">15</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>—— <em>Simon Gladman (@flexmonkey), Swift</em> 版 <em>Core Image</em> 的作者</p>
+<h3 id="可变参数函数（Variadic-functions）"><a href="#可变参数函数（Variadic-functions）" class="headerlink" title="可变参数函数（Variadic functions）"></a>可变参数函数（Variadic functions）</h3><p>可变参数函数是具有不确定性的函数，这是一种奇特的说法，就是说它们接受的参数和发送的参数一样多。在一些基本函数(甚至<code>print()</code>)中都使用了这种方法，以使代码编写更简单、更安全。</p>
+<p>让我们使用<code>print()</code>，因为它是一个你很熟悉的函数。你习惯看到这样的代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"I'm Commander Shepard and this is my favorite book"</span><span class="token punctuation">)</span></code></pre>
+<p>但是<code>print()</code>是一个可变参数函数，这意味着您可以传递任意数量的要打印的内容：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token function">print</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span></code></pre>
+<p>这将与为每个数字调用一次<code>print()</code>产生不同的输出：使用一次性调用将在一行中打印所有数字，而使用多次调用将逐行打印数字。</p>
+<p>一旦添加了可选的额外参数：<code>separator</code>和<code>terminator</code>，<code>print()</code>的可变参数特性将变得更加有用。第一个参数在传递的每个值之间放置一个字符串，第二个参数在打印完所有值后放置一个字符串。例如，这将打印 “<em>1、2、3、4、5、6 !</em> ”：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token function">print</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> separator<span class="token punctuation">:</span> <span class="token string">", "</span><span class="token punctuation">,</span> terminator<span class="token punctuation">:</span> <span class="token string">"!"</span><span class="token punctuation">)</span></code></pre>
+<p>这就是如何调用可变参数函数。现在我们来谈谈如何制作它们，我认为你会发现这在 <em>Swift</em> 中相当巧妙。</p>
+<p>考虑下面的代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">add</span><span class="token punctuation">(</span>numbers<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Int</span> <span class="token punctuation">{</span>
+   <span class="token keyword">var</span> total <span class="token operator">=</span> <span class="token number">0</span>
+   <span class="token keyword">for</span> number <span class="token keyword">in</span> numbers <span class="token punctuation">{</span>
+      total <span class="token operator">+</span><span class="token operator">=</span> number
+   <span class="token punctuation">}</span>
+   <span class="token keyword">return</span> total
+<span class="token punctuation">}</span>
+<span class="token function">add</span><span class="token punctuation">(</span>numbers<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<p>该函数接受一个整数数组，然后将每个数字相加，得到一个总数。有更有效的方法可以做到这一点，但这不是本章的重点!</p>
+<p>要使该函数拥有可变参数，即它接受任何数量的单个整数而不是单个数组，需要进行两次更改。首先，我们需要将参数写成<code>Int...</code>，而不是写成<code>[int]</code>。其次，我们不需要这样调用<code>add(numbers: [1, 2, 3, 4, 5])</code>，而是应该这样调用<code>add(numbers: 1, 2, 3, 4, 5)</code>。</p>
+<p>就是这样。最后的代码是这样的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">add</span><span class="token punctuation">(</span>numbers<span class="token punctuation">:</span> <span class="token builtin">Int</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Int</span> <span class="token punctuation">{</span>
+   <span class="token keyword">var</span> total <span class="token operator">=</span> <span class="token number">0</span>
+   <span class="token keyword">for</span> number <span class="token keyword">in</span> numbers <span class="token punctuation">{</span>
+      total <span class="token operator">+</span><span class="token operator">=</span> number
+   <span class="token punctuation">}</span>
+   <span class="token keyword">return</span> total
+<span class="token punctuation">}</span>
+<span class="token function">add</span><span class="token punctuation">(</span>numbers<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span></code></pre>
+<p>你可以将可变参数放在函数的参数列表中的任何位置，但是每个函数只能有一个可变参数。</p>
+<h3 id="操作符重载（Operator-overloading）"><a href="#操作符重载（Operator-overloading）" class="headerlink" title="操作符重载（Operator overloading）"></a>操作符重载（Operator overloading）</h3><p>这是一个人们既爱又恨的话题。操作符重载是实现你自己的操作符甚至调整现有操作符(如<code>+</code>或 <code>*</code>)的能力。</p>
+<p>使用操作符重载的主要原因是它提供了非常清晰、自然和富有表现力的代码。你已经理解了 <em>5 + 5 = 10</em> ，因为你了解基础数学，所以允许 <em>myShoppingList + yourShoppingList</em> 是一个逻辑扩展，即将两个自定义结构相加。</p>
+<p>操作符重载有几个缺点。首先，它的含义可能是不透明的：如果我说<code>henrytheeight + AnneBoleyn</code>，结果是一对幸福的夫妇(暂时!)、一个未来伊丽莎白女王( <em>Queen Elizabeth</em> )形状的婴儿，还是某个四肢相连的人类?</p>
+<p>其次，它没有做任何方法不能做的事情：<code>HenryTheEighth.marry(AnneBoleyn)</code>也会有同样的结果，而且明显更清晰。第三，它隐藏了复杂性：<em>5 + 5</em> 是一个微不足道的操作，但是 <em>Person + Person</em> 可能涉及到安排一个仪式、找到一件婚纱等等。</p>
+<p>第四，可能也是最严重的，操作符重载可能会产生意想不到的结果，特别是因为你可以不受惩罚地调整现有的操作符。</p>
+<h3 id="基础操作符-The-basics-of-operators"><a href="#基础操作符-The-basics-of-operators" class="headerlink" title="基础操作符(The basics of operators)"></a>基础操作符(The basics of operators)</h3><p>为了演示操作符重载是多么令人困惑，我想先给出一个重载<code>==</code>操作符的基本示例。考虑以下代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">if</span> <span class="token number">4</span> <span class="token operator">==</span> <span class="token number">4</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Match!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"No match!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>就像你想得那样，它会打印 “<em>Match!</em> ” 因为 <em>4</em> 总是等于 <em>4</em>。还是……？</p>
+<p>进入操作符重载。只需三行代码，我们就可以对几乎所有应用程序造成严重损害：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token operator">==</span><span class="token punctuation">(</span>lhs<span class="token punctuation">:</span> <span class="token builtin">Int</span><span class="token punctuation">,</span> rhs<span class="token punctuation">:</span> <span class="token builtin">Int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Bool</span> <span class="token punctuation">{</span>
+   <span class="token keyword">return</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">if</span> <span class="token number">4</span> <span class="token operator">==</span> <span class="token number">4</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Match!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"No match!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>当代码运行时，它将输出 “ <em>No match !</em> ”，因为我们重载了<code>==</code>操作符，所以它总是返回<code>false</code>。正如你所看到的，函数的名称是操作符本身，即<code>func ==</code>，所以你要修改的内容非常清楚。你还可以看到，这个函数期望接收两个整数(左边和右边分别是<code>lhs</code>和<code>rhs</code>)，并返回一个布尔值，该值报告这两个数字是否相等。</p>
+<p>除了完成实际工作的函数外，操作符还具有优先级和关联性，这两者都会影响操作的结果。当多个运算符一起使用而没有括号时，<em>Swift</em> 首先使用优先级最高的运算符——你可能学习过PEMDAS(括号、指数、乘除、加减)、<em>BODMAS</em> 或类似的运算符，取决于你在哪里上学。如果仅凭优先级不足以决定操作的顺序，则使用结合律。</p>
+<p><em>Swift</em> 允许你控制优先级和关联性。现在让我们尝试一个实验：下面操作的结果是什么？</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">5</span> <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">+</span> <span class="token number">1</span></code></pre>
+<p>根据 <em>PEMDAS</em> ，应该首先执行乘法(<em>5 * 10 = 50</em> )，然后执行加法(<em>50 + 1 = 51</em> )，因此结果是 <em>51</em>  。这个优先级被直接写入了 <em>Swift</em> ——以下是来自 <em>Swift</em>  标准库的确切代码：</p>
+<pre class=" language-swift"><code class="language-swift">precedencegroup <span class="token builtin">AdditionPrecedence</span> <span class="token punctuation">{</span>
+   <span class="token keyword">associativity</span><span class="token punctuation">:</span> <span class="token keyword">left</span>
+   higherThan<span class="token punctuation">:</span> <span class="token builtin">RangeFormationPrecedence</span>
+<span class="token punctuation">}</span>
+precedencegroup <span class="token builtin">MultiplicationPrecedence</span> <span class="token punctuation">{</span>
+   <span class="token keyword">associativity</span><span class="token punctuation">:</span> <span class="token keyword">left</span>
+   higherThan<span class="token punctuation">:</span> <span class="token builtin">AdditionPrecedence</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">infix</span> <span class="token keyword">operator</span> <span class="token operator">*</span> <span class="token punctuation">:</span> <span class="token builtin">MultiplicationPrecedence</span>
+<span class="token keyword">infix</span> <span class="token keyword">operator</span> <span class="token operator">+</span> <span class="token punctuation">:</span> <span class="token builtin">AdditionPrecedence</span>
+<span class="token keyword">infix</span> <span class="token keyword">operator</span> <span class="token operator">-</span> <span class="token punctuation">:</span> <span class="token builtin">AdditionPrecedence</span></code></pre>
+<p>这将声明两个操作符优先组，然后声明 <code>*</code>、<code>+</code> 和 <code>-</code> 操作符位于这些组中。你可以看到，<code>MultiplicationPrecedence</code>被标记为高于<code>AdditionPrecedence</code>，这就是 <code>*</code> 在 <code>+</code> 之前被计算的原因。</p>
+<p>这三个操作符被称为<strong>中缀操作符</strong>，因为它们被放在两个操作数中，即 <em>5 + 5</em> ，而不是像<code>!</code>这样的前缀操作符，例如:<code>!loggedIn</code>。</p>
+<p><em>Swift</em> 允许我们通过将现有操作符分配给新的组来重新定义它们的优先级。如果需要，可以创建自己的优先组，或者重用现有的优先组。</p>
+<p>在上面的代码中，你可以看到顺序是乘法优先级(用于<code>*</code>、<code>/</code>、<code>%</code>和更多)，然后是加法优先级(用于<code>+</code>、<code>-</code>、<code>|</code>和更多)，然后是范围优先级(用于<code>...</code>和 <code>..&lt;</code>。)</p>
+<p>在我们的小算术中，我们可以通过像这样重写<code>*</code>运算符来引起各种奇怪的行为：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">infix</span> <span class="token keyword">operator</span> <span class="token operator">*</span> <span class="token punctuation">:</span> <span class="token builtin">RangeFormationPrecedence</span></code></pre>
+<p>这就重新定义了<code>*</code>的优先级比<code>+</code>低，这意味着这段代码现在将返回<code>55</code>：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">5</span> <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">+</span> <span class="token number">1</span></code></pre>
+<p>这是与之前相同的代码行，但现在将执行加法(<em>10 + 1 = 11</em>)，然后乘法(<em>5 * 11</em>) 得到 <em>55</em>。</p>
+<p>当两个操作符具有相同的优先级时，就会发挥结合律的作用。例如，考虑以下问题:</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">10</span> <span class="token operator">-</span> <span class="token number">5</span> <span class="token operator">-</span> <span class="token number">1</span></code></pre>
+<p>再看看 <em>Swift</em> 自己的代码是如何声明 <em>AdditionPrecedence</em> 组的，<code>-</code>运算符属于这个组：</p>
+<pre class=" language-swift"><code class="language-swift">precedencegroup <span class="token builtin">AdditionPrecedence</span> <span class="token punctuation">{</span>
+   <span class="token keyword">associativity</span><span class="token punctuation">:</span> <span class="token keyword">left</span>
+   higherThan<span class="token punctuation">:</span> <span class="token builtin">RangeFormationPrecedence</span>
+<span class="token punctuation">}</span></code></pre>
+<p>如你所见，它被定义为具有左结合性，这意味着 <em>10 - 5 - 1</em> 被执行为 <em>(10 - 5) - 1</em>，而不是 <em>10 - (5 - 1)</em>。</p>
+<p>这种差别很细微，但很重要：除非我们改变它，否则 <em>10 - 5 - 1</em> 将得到 <em>4</em> 。当然，如果你想造成一点破坏，你可以这样做：</p>
+<pre class=" language-swift"><code class="language-swift">precedencegroup <span class="token builtin">AdditionPrecedence</span> <span class="token punctuation">{</span>
+   <span class="token keyword">associativity</span><span class="token punctuation">:</span> <span class="token keyword">right</span>
+   higherThan<span class="token punctuation">:</span> <span class="token builtin">RangeFormationPrecedence</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">infix</span> <span class="token keyword">operator</span> <span class="token operator">-</span> <span class="token punctuation">:</span> <span class="token builtin">AdditionPrecedence</span>
+<span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">10</span> <span class="token operator">-</span> <span class="token number">5</span> <span class="token operator">-</span> <span class="token number">1</span></code></pre>
+<p>这将修改现有的加法优先组，然后随着改变被更新，式子将被解释为 <em>10 - (5 - 1)</em>，即结果等于 <em>6</em>。</p>
+<h3 id="添加到现有操作符-Adding-to-an-existing-operator"><a href="#添加到现有操作符-Adding-to-an-existing-operator" class="headerlink" title="添加到现有操作符(Adding to an existing operator)"></a>添加到现有操作符(Adding to an existing operator)</h3><p>现在你已经了解了操作符的工作原理，让我们修改<code>*</code>操作符，使它可以像这样对整数数组进行乘法操作：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span></code></pre>
+<p>完成之后，将返回一个包含<code>[1,4,9]</code>的新数组，即<code>1x1</code>, <code>2x2</code>和<code>3x3</code>。</p>
+<p><code>*</code>操作符已经存在，所以我们不需要声明它。相反，我们只需要创建一个新的<code>func *</code>，它接受我们的新数据类型。这个函数将创建一个新数组，该数组由所提供的两个数组中的每一项相乘组成。这是代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token operator">*</span><span class="token punctuation">(</span>lhs<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">,</span> rhs<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+   <span class="token keyword">guard</span> lhs<span class="token punctuation">.</span><span class="token builtin">count</span> <span class="token operator">==</span> rhs<span class="token punctuation">.</span><span class="token builtin">count</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> lhs <span class="token punctuation">}</span>
+   <span class="token keyword">var</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span>index<span class="token punctuation">,</span> int<span class="token punctuation">)</span> <span class="token keyword">in</span> lhs<span class="token punctuation">.</span><span class="token function">enumerated</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      result<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>int <span class="token operator">*</span> rhs<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">return</span> result
+<span class="token punctuation">}</span></code></pre>
+<p>注意，我在开头添加了一个<code>guard</code>，以确保两个数组包含相同数量的项。</p>
+<p>因为<code>*</code>操作符已经存在，所以重要的是<code>lhs</code>和<code>rhs</code>参数，它们都是整数数组：当两个整数数组相乘时，这些参数确保选择这个新函数。</p>
+<h3 id="添加一个新的操作符（Adding-a-new-operator）"><a href="#添加一个新的操作符（Adding-a-new-operator）" class="headerlink" title="添加一个新的操作符（Adding a new operator）"></a>添加一个新的操作符（Adding a new operator）</h3><p>当你添加一个新的操作符时，你需要提供足够的 <em>Swift</em> 信息来使用它。至少需要指定新操作符的位置(前缀、后缀或中缀)，但如果不指定优先级或关联性 <em>Swift</em> 将提供默认值，使其成为低优先级、非关联操作符。</p>
+<p>让我们添加一个新的操作符<code>**</code>，它返回一个值的幂。也就是说，<em>2 ** 4</em> 应该等于 <em>2 * 2 * 2 * 2</em> ，即 <em>16</em>。我们将使用<code>pow()</code>函数，所以你需要导入<code>Foundation</code>框架：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">import</span> <span class="token builtin">Foundation</span></code></pre>
+<p>一旦完成，我们需要告诉 <em>Swift</em>  <code>**</code>将是一个中缀操作符，因为我们将在其左侧有一个操作数，在其右侧有另一个操作数：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">infix</span> <span class="token keyword">operator</span> <span class="token operator">*</span><span class="token operator">*</span></code></pre>
+<p>它没有指定优先级或关联，因此将使用默认值。</p>
+<p>最后，新的<code>**</code>函数本身。我已经让它接受双精度值以获得最大的灵活性，<code>Swift</code>足够聪明，当与这个操作符一起使用时，可以推断<code>2</code>和<code>4</code>是双精度值：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">(</span>lhs<span class="token punctuation">:</span> <span class="token builtin">Double</span><span class="token punctuation">,</span> rhs<span class="token punctuation">:</span> <span class="token builtin">Double</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Double</span> <span class="token punctuation">{</span>
+   <span class="token keyword">return</span> <span class="token function">pow</span><span class="token punctuation">(</span>lhs<span class="token punctuation">,</span> rhs<span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>如你所见，由于<code>pow()</code>，函数本身非常简单。自己试试：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">*</span><span class="token operator">*</span> <span class="token number">4</span></code></pre>
+<p>到目前为止，一切顺利。然而，像这样的表达是行不通的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token number">4</span> <span class="token operator">*</span><span class="token operator">*</span> <span class="token number">3</span> <span class="token operator">*</span><span class="token operator">*</span> <span class="token number">2</span></code></pre>
+<p>事实上，甚至像这样的东西也不会奏效：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">*</span><span class="token operator">*</span> <span class="token number">3</span> <span class="token operator">+</span> <span class="token number">2</span></code></pre>
+<p>这是因为我们使用的是默认优先级和结合性。为了解决这个问题，我们需要决定与其他操作符相比<code>**</code>应该排在什么位置，为此，你可以返回到 <em>PEMDAS</em> (它是 <em>E</em> !)，或者查看其他语言的功能。例如，<em>Haskell</em> 把它放在乘法和除法之前，在<em>PEMDAS</em> 之后。<em>Haskell<em>还声明幂运算右结合性，这意味着 *4 *</em> 3 ** 2</em> 将被解析为 <em>4 *<em>(3 *</em> 2)</em> 。</p>
+<p>我们可以使我们自己的<code>**</code>操作符的行为相同的方式，修改其声明如下:</p>
+<pre class=" language-swift"><code class="language-swift">precedencegroup <span class="token builtin">ExponentiationPrecedence</span> <span class="token punctuation">{</span>
+   higherThan<span class="token punctuation">:</span> <span class="token builtin">MultiplicationPrecedence</span>
+   <span class="token keyword">associativity</span><span class="token punctuation">:</span> <span class="token keyword">right</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">infix</span> <span class="token keyword">operator</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">:</span> <span class="token builtin">ExponentiationPrecedence</span></code></pre>
+<p>有了这个更改，你现在可以在同一个表达式中使用<code>**</code>两次，还可以将它与其他操作符组合使用——这样做会更好!</p>
+<h3 id="修改现有的操作符-Modifying-an-existing-operator"><a href="#修改现有的操作符-Modifying-an-existing-operator" class="headerlink" title="修改现有的操作符(Modifying an existing operator)"></a>修改现有的操作符(Modifying an existing operator)</h3><p>现在来看一些更复杂的东西：修改现有的操作符。我选择了一个稍微复杂一点的例子，因为如果你能看到我在这里解决它，我希望它能帮助你解决你自己的操作符重载问题。</p>
+<p>我要修改的运算符是<code>...</code>，它已经作为闭区间运算符存在。所以，你可以写<code>1...10</code>，然后得到覆盖 <em>1</em> 到<em>10</em> 的范围 。在默认情况下这是一个中缀操作符，范围的低端在左侧，高端在右侧，但我要修改它，以便它还接受左侧的范围和右侧的另一个整数，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> range <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">10</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">1</span></code></pre>
+<p>当代码运行时，它将返回一个数组，其中包含数字<code>1、2、3、4、5、6、6、7、8、9、10、9、8、7、6、5、4、3、2、1</code>——它先递增再递减。这是可能的，因为运算符出现了两次：第一次它将看到<code>1...10</code>，这是一个闭合范围运算符，第二次它将看到<code>CountableClosedRange&lt;Int&gt;...1</code>，这将是我们的新操作。在此函数中，<code>CountableClosedRange&lt;Int&gt;</code>是左侧操作数，而<code>Int 1</code>是右侧操作数。</p>
+<p>新<code>...</code>函数需要做两件事：</p>
+<ol>
+<li>计算一个新的区间，从右边的整数到左边区间的最高点，然后反转这个区间。</li>
+<li>将左边的区间追加到新创建的递减区间，并作为函数的结果返回该区间。</li>
+</ol>
+<p>在代码中，它看起来是这样的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">(</span>lhs<span class="token punctuation">:</span> <span class="token builtin">CountableClosedRange</span><span class="token operator">&lt;</span><span class="token builtin">Int</span><span class="token operator">></span><span class="token punctuation">,</span> rhs<span class="token punctuation">:</span> <span class="token builtin">Int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+   <span class="token keyword">let</span> downwards <span class="token operator">=</span> <span class="token punctuation">(</span>rhs <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">&lt;</span> lhs<span class="token punctuation">.</span>upperBound<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">reversed</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token keyword">return</span> <span class="token function">Array</span><span class="token punctuation">(</span>lhs<span class="token punctuation">)</span> <span class="token operator">+</span> downwards
+<span class="token punctuation">}</span></code></pre>
+<p>如果你尝试使用该代码，你将看到它无法工作—至少目前还不能。要知道为什么，看看Swift对<code>...</code>操作符的定义：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">infix</span> <span class="token keyword">operator</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">:</span> <span class="token builtin">RangeFormationPrecedence</span>
+precedencegroup <span class="token builtin">RangeFormationPrecedence</span> <span class="token punctuation">{</span>
+   higherThan<span class="token punctuation">:</span> <span class="token builtin">CastingPrecedence</span>
+<span class="token punctuation">}</span></code></pre>
+<p>现在再来看看我们的代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> range <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">10</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">1</span></code></pre>
+<p>你可以看到我们用到了<code>...</code>操作符两次，这意味着 <em>Swift</em> 需要知道我们想要<code>(1...10)...1</code>还是<code>1...(10...1)</code>。正如你在上面看到的，<em>Swift</em> 的定义的<code>...</code>操作符没有提到它的结合律，所以 <em>Swift</em> 不知道在这种情况下该怎么做。所以，就目前情况来看，我们的新操作符只能处理这样的代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> range <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">1</span></code></pre>
+<p>如果我们想要相同的行为而不需要用户添加括号，我们需要告诉 <em>Swift</em> <code>...</code>操作符有左结合性，像这样：</p>
+<pre class=" language-swift"><code class="language-swift">precedencegroup <span class="token builtin">RangeFormationPrecedence</span> <span class="token punctuation">{</span>
+   <span class="token keyword">associativity</span><span class="token punctuation">:</span> <span class="token keyword">left</span>
+   higherThan<span class="token punctuation">:</span> <span class="token builtin">CastingPrecedence</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">infix</span> <span class="token keyword">operator</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">:</span> <span class="token builtin">RangeFormationPrecedence</span></code></pre>
+<p>就是这样：现在代码在没有括号的情况下可以正常工作，并且我们有了一个有用的新操作符。不要忘记，在 <em>Playground</em> ，你的代码顺序很重要——你的最终代码应该是这样的：</p>
+<pre class=" language-swift"><code class="language-swift">precedencegroup <span class="token builtin">RangeFormationPrecedence</span> <span class="token punctuation">{</span>
+   <span class="token keyword">associativity</span><span class="token punctuation">:</span> <span class="token keyword">left</span>
+   higherThan<span class="token punctuation">:</span> <span class="token builtin">CastingPrecedence</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">infix</span> <span class="token keyword">operator</span>  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">:</span> <span class="token builtin">RangeFormationPrecedence</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">(</span>lhs<span class="token punctuation">:</span> <span class="token builtin">CountableClosedRange</span><span class="token operator">&lt;</span><span class="token builtin">Int</span><span class="token operator">></span><span class="token punctuation">,</span> rhs<span class="token punctuation">:</span> <span class="token builtin">Int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+   <span class="token keyword">let</span> downwards <span class="token operator">=</span> <span class="token punctuation">(</span>rhs <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">&lt;</span> lhs<span class="token punctuation">.</span>upperBound<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">reversed</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token keyword">return</span> <span class="token function">Array</span><span class="token punctuation">(</span>lhs<span class="token punctuation">)</span> <span class="token operator">+</span> downwards
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> range <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">10</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">1</span>
+<span class="token function">print</span><span class="token punctuation">(</span>range<span class="token punctuation">)</span></code></pre>
+<h2 id="闭包-Closures"><a href="#闭包-Closures" class="headerlink" title="闭包(Closures)"></a>闭包(Closures)</h2><p>和元组一样，闭包在 <em>Swift</em> 中是特有的：全局函数是闭包，嵌套函数是闭包，<code>sort()</code>和<code>map()</code>等函数方法接受闭包，惰性属性使用闭包，这只是冰山一角。在你的 <em>Swift</em> 开发职业生涯中，你将需要使用闭包，如果你想晋升到高级开发职位，那么你也需要轻松地创建闭包。</p>
+<p>我知道有些人对闭包有不同寻常的理解，所以让我们从一个简单的定义开始：闭包是一段代码，可以像变量一样传递和存储，它还能够捕获它使用的任何值。这种捕获确实使闭包难以理解，所以我们稍后再讨论它。</p>
+<h3 id="创建简单的闭包-Creating-simple-closures"><a href="#创建简单的闭包-Creating-simple-closures" class="headerlink" title="创建简单的闭包(Creating simple closures)"></a>创建简单的闭包(Creating simple closures)</h3><p>让我们创建一个简单的闭包来让事情运行起来：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> greetPerson <span class="token operator">=</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Hello there!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>它创建一个名为<code>greetPerson</code>的闭包，然后可以像函数一样使用：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token function">greetPerson</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>因为闭包是第一类数据类型——也就是说，就像整数、字符串和其他类型一样——所以你可以复制它们并将它们用作其他函数的参数。以下是实际复制：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> greetCopy <span class="token operator">=</span> greetPerson
+<span class="token function">greetCopy</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>复制闭包时，请记住闭包是引用类型——这两个“副本”实际上指向同一个共享闭包。</p>
+<p>要将闭包作为参数传递给函数，请指定闭包自己的参数列表并将返回值作为其数据类型。也就是说，你不需要编写<code>param: String</code>，而是编写类似<code>param: () -&gt; Void</code>这样的东西来接受没有参数且没有返回值的闭包。是的，<code>-&gt; Void</code>是必需的，否则<code>param:()</code>将意味着一个空元组。</p>
+<p>如果我们想将<code>greetPerson</code>闭包传递给一个函数并在那里调用它，我们将使用如下代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">runSomeClosure</span><span class="token punctuation">(</span><span class="token number">_</span> closure<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">closure</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">runSomeClosure</span><span class="token punctuation">(</span>greetPerson<span class="token punctuation">)</span></code></pre>
+<p>为什么需要闭包？在那个例子中不是，但是如果我们想在 <em>5</em> 秒后调用闭包呢？或者我们只是想偶尔调用它？或者是否满足某些条件？这就是闭包变得有用的地方:它们是一些功能，你的应用程序可以将它们存储起来，以便以后需要时使用。</p>
+<p>闭包开始变得混乱的地方是当它们接受自己的参数时，部分原因是它们的参数列表放在一个不寻常的位置，还因为这些闭包的类型语法可能看起来非常混乱!</p>
+<p>首先：如何使闭包接受参数。要做到这一点，请在闭包的括号内写入参数列表，然后输入关键字<code>in</code>：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> greetPerson <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token punctuation">(</span>name<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token keyword">in</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Hello, <span class="token interpolation"><span class="token delimiter variable">\(</span>name<span class="token delimiter variable">)</span></span>!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">greetPerson</span><span class="token punctuation">(</span><span class="token string">"Taylor"</span><span class="token punctuation">)</span></code></pre>
+<p>如果需要，还可以在这里指定捕获列表。这是最常用的，以避免<code>self</code>引用循环，通过使它<code>unowned</code>，像这样的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> greetPerson <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token punctuation">(</span>name<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token keyword">unowned</span> <span class="token keyword">self</span><span class="token punctuation">]</span> <span class="token keyword">in</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Hello, <span class="token interpolation"><span class="token delimiter variable">\(</span>name<span class="token delimiter variable">)</span></span>!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">greetPerson</span><span class="token punctuation">(</span><span class="token string">"Taylor"</span><span class="token punctuation">)</span></code></pre>
+<p>现在，讨论如何使用闭包将参数传递给函数。这很复杂，有两个原因：1)它可能看起来像一个冒号和括号的海洋，2)调用约定根据你做的事情而变化。</p>
+<p>让我们回到<code>runSomeClosure()</code>函数。为了让它接受一个参数——一个本身接受一个参数的闭包——我们需要这样定义它：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">runSomeClosure</span><span class="token punctuation">(</span><span class="token number">_</span> closure<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span></code></pre>
+<p>闭包是一个函数，它接受一个字符串，但什么也不返回。这是一个新的功能：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> greetPerson <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token punctuation">(</span>name<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token keyword">in</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Hello, <span class="token interpolation"><span class="token delimiter variable">\(</span>name<span class="token delimiter variable">)</span></span>!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">runSomeClosure</span><span class="token punctuation">(</span><span class="token number">_</span> closure<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">closure</span><span class="token punctuation">(</span><span class="token string">"Taylor"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">runSomeClosure</span><span class="token punctuation">(</span>greetPerson<span class="token punctuation">)</span></code></pre>
+<h3 id="闭包捕获（Closure-capturing）"><a href="#闭包捕获（Closure-capturing）" class="headerlink" title="闭包捕获（Closure capturing）"></a>闭包捕获（Closure capturing）</h3><p>我已经讨论了闭包是如何作为引用类型的，它对捕获的值有巧妙的含义：当两个变量指向同一个闭包时，它们都使用相同的捕获数据。</p>
+<p>让我们从基础开始：当一个闭包引用一个值时，它需要确保该值在运行闭包时仍然存在。这看起来像是闭包在复制数据，但实际上它比这更微妙。这个过程称为捕获，它允许闭包引用和修改它引用的值，即使原始值不再存在。</p>
+<p>区别很重要：如果闭包复制了它的值，那么就会应用值类型语义，并且闭包内的值类型的任何更改都将发生在一个惟一的副本上，不会影响原来的调用方。相反，闭包捕获数据。</p>
+<p>我知道这一切听起来都是假设，所以让我给你一个实际的例子：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">testCapture</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span> <span class="token punctuation">{</span>
+   <span class="token keyword">var</span> counter <span class="token operator">=</span> <span class="token number">0</span>
+   <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      counter <span class="token operator">+</span><span class="token operator">=</span> <span class="token number">1</span>
+      <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Counter is now <span class="token interpolation"><span class="token delimiter variable">\(</span>counter<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> greetPerson <span class="token operator">=</span> <span class="token function">testCapture</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">greetPerson</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">greetPerson</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">greetPerson</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> greetCopy <span class="token operator">=</span> greetPerson
+<span class="token function">greetCopy</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">greetPerson</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">greetCopy</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>这段代码声明了一个名为<code>testCapture()</code>的函数，该函数的返回值为<code>()-&gt; Void</code>，即它返回一个不接受任何参数且什么也不返回的函数。在<code>testCapture()</code>中，我创建了一个名为<code>counter</code>的新变量，初始值为<code>0</code>。但是，函数内的变量没有发生任何变化。相反，它返回一个闭包，该闭包将<code>counter</code>加 <em>1</em> 并打印出它的新值。它不调用那个闭包，它只返回它。</p>
+<p>有趣的地方是函数之后：<code>greetPerson</code>被设置为<code>testCapture()</code>返回的函数，它被调用了三次。该闭包引用了在<code>testCapture()</code>中创建的<code>counter</code>值，现在显然超出了范围，因为该函数已经完成。因此，<em>Swift</em> 捕捉到了这个值：这个闭包现在有了自己对<code>counter</code>的独立引用，可以在调用它时使用。每次调用<code>greetPerson()</code>函数时，你将看到<code>counter</code>加 <em>1</em> 。</p>
+<p>让事情变得加倍有趣的是<code>greetCopy</code>。这就是我所说的闭包是引用，并且使用相同的捕获数据。当调用<code>greetCopy()</code>时，它将增加与<code>greetPerson</code>相同的<code>counter</code>值，因为它们都指向相同的捕获数据。这意味着在一次又一次地调用闭包时<code>counter</code>值将从 <em>1</em> 增加到 <em>6</em>。这个怪癖我已经讲过两次了，所以如果它伤害了你的大脑，不要担心：它不会再被覆盖了!</p>
+<h3 id="闭包简写语法-Closure-shorthand-syntax"><a href="#闭包简写语法-Closure-shorthand-syntax" class="headerlink" title="闭包简写语法(Closure shorthand syntax)"></a>闭包简写语法(Closure shorthand syntax)</h3><p>在讨论更高级的内容之前，我想快速地全面介绍一下闭包简写语法，这样我们就完全处于同一种思路。当你把一个内联闭包传递给一个函数时，<em>Swift</em> 有几种技术，所以你不需要写太多的代码。</p>
+<p>为了给你提供一个好例子，我将使用数组的<code>filter()</code>方法，它接受一个带有一个字符串参数的闭包，如果该字符串应该在一个新的数组中，则返回<code>true</code>。下面的代码过滤一个数组，这样我们就得到了一个新的数组，每个人的名字都以<code>Michael</code>开头：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Michael Jackson"</span><span class="token punctuation">,</span> <span class="token string">"Taylor Swift"</span><span class="token punctuation">,</span> <span class="token string">"Michael Caine"</span><span class="token punctuation">,</span> <span class="token string">"Adele Adkins"</span><span class="token punctuation">,</span> <span class="token string">"Michael Jordan"</span><span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> result1 <span class="token operator">=</span> names<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token punctuation">(</span>name<span class="token punctuation">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Bool</span> <span class="token keyword">in</span>
+   <span class="token keyword">if</span> name<span class="token punctuation">.</span><span class="token function">hasPrefix</span><span class="token punctuation">(</span><span class="token string">"Michael"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token boolean">true</span>
+   <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token boolean">false</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token function">print</span><span class="token punctuation">(</span>result1<span class="token punctuation">.</span><span class="token builtin">count</span><span class="token punctuation">)</span></code></pre>
+<p>从中可以看出<code>filter()</code>希望接收一个闭包，该闭包接受一个名为<code>name</code>的字符串参数，并返回<code>true</code>或<code>false</code>。然后闭包检查名称是否具有前缀 “ <em>Michael</em> ” 并返回一个值。</p>
+<p><em>Swift</em> 知道传递给<code>filter()</code>的闭包必须接受一个字符串并返回一个布尔值，所以我们可以删除它，只使用一个变量的名称，该变量将用于对每个条目进行过滤：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result2 <span class="token operator">=</span> names<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name <span class="token keyword">in</span>
+   <span class="token keyword">if</span> name<span class="token punctuation">.</span><span class="token function">hasPrefix</span><span class="token punctuation">(</span><span class="token string">"Michael"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token boolean">true</span>
+   <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token boolean">false</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>接下来，我们可以直接返回<code>hasPrefix()</code>的结果，如下：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result3 <span class="token operator">=</span> names<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name <span class="token keyword">in</span>
+   <span class="token keyword">return</span> name<span class="token punctuation">.</span><span class="token function">hasPrefix</span><span class="token punctuation">(</span><span class="token string">"Michael"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>尾随闭包允许我们删除一组括号，这总是受欢迎的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result4 <span class="token operator">=</span> names<span class="token punctuation">.</span><span class="token builtin">filter</span> <span class="token punctuation">{</span> name <span class="token keyword">in</span>
+   <span class="token keyword">return</span> name<span class="token punctuation">.</span><span class="token function">hasPrefix</span><span class="token punctuation">(</span><span class="token string">"Michael"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>因为我们的闭包只有一个表达式——即现在我们已经删除了很多代码，它只做一件事——我们甚至不再需要<code>return</code>关键字。<em>Swift</em> 知道我们的闭包必须返回一个布尔值，因为我们只有一行代码，<em>Swift</em> 知道它必须是返回值的那一行。代码现在看起来是这样的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result4 <span class="token operator">=</span> names<span class="token punctuation">.</span><span class="token builtin">filter</span> <span class="token punctuation">{</span> name <span class="token keyword">in</span>
+   <span class="token keyword">return</span> name<span class="token punctuation">.</span><span class="token function">hasPrefix</span><span class="token punctuation">(</span><span class="token string">"Michael"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>许多人在此止步，理由很充分：下一步开始可能会相当混乱。你看，当这个闭包被调用时，<em>Swift</em> 会自动创建匿名参数名，这些匿名参数名由一个美元符号和一个从 <em>0</em> 开始计数的数字组成。<em>$0, $1, $2</em>，以此类推。你不允许在自己的代码中使用这样的名称，所以这些名称很容易脱颖而出!</p>
+<p>这些简写参数名映射到闭包接受的参数。在本例中，这意味着<code>name</code>可用为<code>$0</code>。不能混合显式参数和匿名参数：要么声明入参列表，要么使用 <em>$0</em> 系列。这两者做的是完全一样的：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result6 <span class="token operator">=</span> names<span class="token punctuation">.</span><span class="token builtin">filter</span> <span class="token punctuation">{</span> name <span class="token keyword">in</span>
+   name<span class="token punctuation">.</span><span class="token function">hasPrefix</span><span class="token punctuation">(</span><span class="token string">"Michael"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> result7 <span class="token operator">=</span> names<span class="token punctuation">.</span><span class="token builtin">filter</span> <span class="token punctuation">{</span>
+   $<span class="token number">0</span><span class="token punctuation">.</span><span class="token function">hasPrefix</span><span class="token punctuation">(</span><span class="token string">"Michael"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>注意到在使用匿名时必须删除<code>name in</code>部分吗？是的，这意味着更少的输入，但同时你也放弃了一点可读性。我喜欢在我自己的代码中使用简写名称，但是只有在需要时才应该使用它们。</p>
+<p>如果你选择使用简写名称，通常会将整个方法调用放在一行上，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> result8 <span class="token operator">=</span> names<span class="token punctuation">.</span><span class="token builtin">filter</span> <span class="token punctuation">{</span> $<span class="token number">0</span><span class="token punctuation">.</span><span class="token function">hasPrefix</span><span class="token punctuation">(</span><span class="token string">"Michael"</span><span class="token punctuation">)</span> <span class="token punctuation">}</span></code></pre>
+<p>当你将其与原始闭包的大小进行比较时，你必须承认这是一个很大的改进!</p>
+<h3 id="函数作为闭包-Functions-as-closures"><a href="#函数作为闭包-Functions-as-closures" class="headerlink" title="函数作为闭包(Functions as closures)"></a>函数作为闭包(Functions as closures)</h3><p><em>Swift</em> 确实模糊了函数、方法、操作符和闭包之间的界限，这非常棒，因为它向你隐藏了所有编译器的复杂性，并让开发人员做我们最擅长的事情：制作出色的应用程序。这种模糊的行为一开始很难理解，在日常编码中更难使用，但是我想向你展示两个示例，我希望它们能展示 <em>Swift</em> 是多么聪明。</p>
+<p>我的第一个例子是这样的：给定一个名为 <code>words</code> 的字符串数组，如何查明这些单词是否存在于名为 <code>input</code>的字符串中? 一种可能的解决方案是将<code>input</code>分解为它自己的数组，然后遍历两个数组以寻找匹配项。但是 <em>Swift</em> 给了我们一个更好的解决方案：如果导入 <em>Foundation</em> 框架, <em>String</em> 会得到一个名为<code>contains()</code>的方法，该方法接受另一个字符串并返回一个布尔值。因此，这段代码将返回<code>true</code>：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> input <span class="token operator">=</span> <span class="token string">"My favorite album is Fearless"</span>
+input<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">"album"</span><span class="token punctuation">)</span></code></pre>
+<p><em>String</em> 数组还有两个<code>contains()</code>方法：一个方法直接指定一个元素(在我们的例子中是字符串)，另一个方法使用<code>where</code>参数接受闭包。该闭包需要接受一个字符串并返回一个布尔值，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift">words<span class="token punctuation">.</span><span class="token builtin">contains</span> <span class="token punctuation">{</span> <span class="token punctuation">(</span>str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Bool</span> <span class="token keyword">in</span>
+   <span class="token keyword">return</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span></code></pre>
+<p><em>Swift</em> 编译器的出色设计让我们把这两件事放在一起：即使字符串的<code>contains()</code>是一个来自 <em>NSString</em> 的基础方法，我们也可以将它传递到数组的<code>contains(where:)</code>中，而不是传递闭包。所以，整个代码变成这样：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">import</span> <span class="token builtin">Foundation</span>
+<span class="token keyword">let</span> words <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"1989"</span><span class="token punctuation">,</span> <span class="token string">"Fearless"</span><span class="token punctuation">,</span> <span class="token string">"Red"</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> input <span class="token operator">=</span> <span class="token string">"My favorite album is Fearless"</span>
+words<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token keyword">where</span><span class="token punctuation">:</span> input<span class="token punctuation">.</span><span class="token builtin">contains</span><span class="token punctuation">)</span></code></pre>
+<p>最后一行是关键。<code>contains(where:)</code>将对数组中的每个元素调用一次闭包，直到找到一个返回<code>true</code>的元素。传入<code>input.contains</code>意味着 <em>Swift</em> 将调用 <code>input.contains("1989")</code> 并返回 <code>false</code>，然后它将调用<code>input.contains("Fearless")</code>并返回<code>true</code>——然后停止。因为<code>contains()</code>具有与<code>contains(where:)</code>所期望的(接受一个字符串并返回一个布尔值)完全相同的签名，所以这就像一个魔咒。</p>
+<p>我的第二个例子使用了数组的<code>reduce()</code>方法：提供一个初始值，然后给它一个函数来应用于数组中的每一项。每次调用该函数时，都会给你两个参数：调用该函数时的前一个值(这将是初始值)和要使用的当前值。</p>
+<p>为了演示这一点，下面是一个调用<code>reduce()</code>对一个整型数组来计算它们的和的例子：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">]</span>
+numbers<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">(</span>int1<span class="token punctuation">,</span> int2<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Int</span> <span class="token keyword">in</span>
+   <span class="token keyword">return</span> int1 <span class="token operator">+</span> int2
+<span class="token punctuation">}</span></code></pre>
+<p>当代码运行时，它将初始值和 <em>1</em> 相加得到 <em>1</em>，然后是<em>1</em>和 <em>3</em> (得到总数: <em>4</em> )，然后是<em>4</em> 和 <em>5</em> (<em>9</em>)，然后是 <em>9</em> 和 <em>7</em> (<em>16</em>)，然后是 <em>16</em> 和 <em>9</em>，最终得到 <em>25</em> 。</p>
+<p>这种方法非常好，但 <em>Swift</em> 有一个更简单、更有效的解决方案：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> result <span class="token operator">=</span> numbers<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">+</span><span class="token punctuation">)</span></code></pre>
+<p>当你思考它的时候，<code>+</code>是一个接受两个整数并返回它们的和的函数，所以我们可以移除整个闭包并用一个操作符替换它。</p>
+<h3 id="逃逸闭包-Escaping-closures"><a href="#逃逸闭包-Escaping-closures" class="headerlink" title="逃逸闭包(Escaping closures)"></a>逃逸闭包(Escaping closures)</h3><p>当你把一个闭包传递给一个函数时，<em>Swift</em>  默认认为它是不可逃逸的。这意味着闭包必须立即在函数内部使用，并且不能存储起来供以后使用。如果你试图在函数返回后使用闭包，<em>Swift</em> 编译器将拒绝构建，例如，如果要使用 <em>GCD</em> 的 <code>asyncAfter()</code>方法在一段时间的延迟之后调用它。</p>
+<p>这对于许多类型的函数都非常有用，比如<code>sort()</code>，在这些函数中，你可以确定闭包将在方法中使用，然后就再也不会使用闭包了。<code>sort()</code>方法接受非逃逸闭包作为其惟一的参数，因为<code>sort()</code>不会尝试存储该闭包的副本供以后使用——它会立即使用闭包，然后结束。</p>
+<p>另一方面，逃逸闭包是在方法返回后调用的闭包。它们存在于许多需要异步调用闭包的地方。例如，可能会给你一个闭包，该闭包只应该在用户做出选择时调用。你可以将该闭包存储起来，提示用户作出决定，然后在准备好用户的选择后调用闭包。</p>
+<p>逃逸闭包和非逃逸闭包之间的区别可能听起来很小，但这很重要，因为闭包是引用类型。一旦 <em>Swift</em> 知道函数一旦完成就不会使用闭包——它是非逃逸的——它就不需要担心引用计数，因此它可以节省一些工作。因此，非逃逸闭包速度更快，并且是 <em>Swift</em> 的默认闭包。也就是说，除非另外指定，否则所有闭包参数都被认为是非逃逸的。</p>
+<p>如果希望指定逃逸闭包，需要使用<code>@escaping</code>关键字。最好的方法是在需要的时候演示一个场景。考虑下面的代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">var</span> queuedClosures<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">func</span> <span class="token function">queueClosure</span><span class="token punctuation">(</span><span class="token number">_</span> closure<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   queuedClosures<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>closure<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">queueClosure</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Running closure 1"</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token function">queueClosure</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Running closure 2"</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token function">queueClosure</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Running closure 3"</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>这将创建要运行的闭包数组和接受要排队的闭包的函数。该函数除了将它被赋予的闭包追加到队列闭包数组之外，什么都不做。最后，它使用三个简单的闭包调用<code>queueClosure()</code>三次，每个闭包打印一条消息。</p>
+<p>为了完成这段代码，我们只需要创建一个名为<code>executequeuedclosure()</code>的新方法，它遍历队列并执行每个闭包：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">executeQueuedClosures</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">for</span> closure <span class="token keyword">in</span> queuedClosures <span class="token punctuation">{</span>
+      <span class="token function">closure</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token function">executeQueuedClosures</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>让我们更仔细地研究<code>queueClosure()</code>方法：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">queueClosure</span><span class="token punctuation">(</span><span class="token number">_</span> closure<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   queuedClosures<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>closure<span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>它只接受一个参数，这是一个没有参数或返回值的闭包。然后将该闭包添加到<code>queuedclosure</code>数组中。这意味着我们传入的闭包可以稍后使用，在本例中，当调用<code>executequeuedclosure()</code>函数时使用。</p>
+<p>因为闭包可以稍后调用，<em>Swift</em> 认为它们是逃逸闭包，所以它将拒绝构建这段代码。请记住，出于性能考虑，非逃逸闭包是默认的，所以我们需要显式地添加<code>@escape</code>关键字，以明确我们的意图：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">queueClosure</span><span class="token punctuation">(</span><span class="token number">_</span> closure<span class="token punctuation">:</span> @<span class="token function">escaping</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   queuedClosures<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>closure<span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>所以：如果你写了一个函数，它会立即调用闭包，然后不再使用它，它在默认情况下是非逃逸的，你可以忘记它。但是，如果你打算存储闭包供以后使用，则需要<code>@escape</code>关键字。</p>
+</blockquote>
+<h3 id="自动闭包-autoclosure"><a href="#自动闭包-autoclosure" class="headerlink" title="自动闭包(@autoclosure)"></a>自动闭包(@autoclosure)</h3><p><code>@autoclosure</code>属性类似于<code>@escaping</code>，因为你将它应用于函数的闭包参数，但是它的使用要少得多。嗯，不，严格来说不是这样的：调用使用<code>@autoclosure</code>的函数是很常见的，但是用它编写函数则不常见。</p>
+<p>当你使用此属性时，它会根据传入的表达式自动创建闭包。当你调用使用此属性的函数时，你编写的代码不是闭包，当它会变成闭包，这可能有点令人困惑——甚至官方的 <em>Swift</em> 参考指南也警告说，<strong>过度使用自动闭包会使代码更难理解</strong>。</p>
+<p>为了帮助你理解它是如何工作的，这里有一个简单的例子：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">printTest</span><span class="token punctuation">(</span><span class="token number">_</span> result<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Before"</span><span class="token punctuation">)</span>
+   <span class="token function">result</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"After"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">printTest</span><span class="token punctuation">(</span> <span class="token punctuation">{</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span> <span class="token punctuation">}</span> <span class="token punctuation">)</span></code></pre>
+<p>该代码创建了<code>printTest()</code>方法，该方法接受闭包并调用它。如你所见，<code>print(“Hello”)</code>位于一个闭包中，该闭包在 “ <em>Before</em> ” 和 “ <em>After</em> ” 之间调用，因此最终的输出是 “ <em>Before</em> ”、“ <em>Hello</em> ”和 “ <em>After</em> ”。</p>
+<p>如果我们使用<code>@autoclosure</code>，它将允许我们重写代码<code>printTest()</code>调用，这样它就不需要大括号，如下所示：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">printTest</span><span class="token punctuation">(</span><span class="token number">_</span> result<span class="token punctuation">:</span> @<span class="token function">autoclosure</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Before"</span><span class="token punctuation">)</span>
+   <span class="token function">result</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"After"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">printTest</span><span class="token punctuation">(</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>由于<code>@autoclosure</code>，这两段代码产生了相同的结果。在第二个代码示例中，<code>print("Hello")</code>不会立即执行，因为它被包装在一个闭包中，以便稍后执行。</p>
+<p>这种行为看起来很简单：所有这些工作只是删除了一对大括号，使代码更难理解。但是，有一个特定的地方需要使用它们：<code>assert()</code>。这是一个 <em>Swift</em> 函数，用于检查条件是否为真，如果不为真，则会导致应用程序停止。</p>
+<p>这听起来可能非常极端：为什么你希望你的应用程序崩溃？显然，你不会这样做，但是在测试应用程序时，添加<code>assert()</code>调用有助于确保代码的行为符合预期。你真正想要的是，你的断言在 <em>debug</em> 模式下是活动的，而在 <em>release</em> 模式下是禁用的，这正是<code>assert()</code>的工作方式。</p>
+<p>请看下面三个例子：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token function">assert</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Maths failure!"</span><span class="token punctuation">)</span>
+<span class="token function">assert</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"Maths failure!"</span><span class="token punctuation">)</span>
+<span class="token function">assert</span><span class="token punctuation">(</span><span class="token function">myReallySlowMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token string">"The slow method returned false!"</span><span class="token punctuation">)</span></code></pre>
+<p>第一个例子返回<code>true</code>，所以什么也不会发生。第二个将返回<code>false</code>，因此应用程序将停止。第三个例子是<code>assert()</code>的强大功能：因为它使用<code>@autoclosure</code>将代码封装在闭包中，所以 <em>Swift</em> 编译器在 <em>release</em> 模式下不会运行闭包。这意味着你可以在调试时获得所有断言的安全性，而不需要在  <em>release</em> 模式中付出任何性能代价。</p>
+<p>你可能有兴趣知道，自动闭包还用于处理<code>&amp;&amp;</code>和<code>||</code>操作符。以下是在官方编译器中找到<code>&amp;&amp;</code>完整的 <em>Swift</em> 源代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">func</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>lhs<span class="token punctuation">:</span> <span class="token builtin">Bool</span><span class="token punctuation">,</span> rhs<span class="token punctuation">:</span> @<span class="token function">autoclosure</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Bool</span><span class="token punctuation">)</span> <span class="token keyword">rethrows</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Bool</span> <span class="token punctuation">{</span>
+   <span class="token keyword">return</span> lhs <span class="token operator">?</span> <span class="token keyword">try</span> <span class="token function">rhs</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span></code></pre>
+<p>是的，它包含<code>try/catch</code>、<code>throw</code>和<code>rethrow</code>、运算符重载、三元运算符和<code>@autoclosure</code>，所有这些都在一个小函数中。尽管如此，我还是希望你能够理解代码的全部功能：如果<code>lhs</code>为真，则返回<code>rhs()</code>的结果，否则返回<code>false</code>。这是实际的短路评估：如果<code>lhs</code>代码已经返回<code>false</code>, <em>Swift</em> 不需要运行<code>rhs</code>闭包。</p>
+<p>关于<code>@autoclosure</code>的最后一件事：如果你想要进行逃逸闭包，你应该将这两个属性组合起来。例如，我们可以像这样重写前面的<code>queueClosure()</code>函数：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function">queueClosure</span><span class="token punctuation">(</span><span class="token number">_</span> closure<span class="token punctuation">:</span> @autoclosure @<span class="token function">escaping</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">Void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   queuedClosures<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>closure<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">queueClosure</span><span class="token punctuation">(</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Running closure 1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<blockquote>
+<p>提醒：小心使用自动闭包。它们会使代码更难理解，所以不要仅仅因为想避免键入一些花括号就使用它们。</p>
+</blockquote>
+<h2 id="操作符-The-operator"><a href="#操作符-The-operator" class="headerlink" title="~=操作符(The ~= operator)"></a>~=操作符(The ~= operator)</h2><p>我知道有一个喜欢的运算符听起来很奇怪，但是我确实喜欢，它是<code>~=</code>。我喜欢它，因为它简单。我爱它，即使它不是真的需要。我甚至喜欢它的形状——只要看看它的美丽就行了！所以我希望你能原谅我花了几分钟时间给你看这个。</p>
+<p>我已经对两个简单的符号流口水了：这到底是做什么的？我很高兴你这么问! <code>~=</code>是模式匹配操作符，它允许你这样编写代码：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> range <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">100</span>
+<span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">42</span>
+<span class="token keyword">if</span> range <span class="token operator">~</span><span class="token operator">=</span> i <span class="token punctuation">{</span>
+   <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Match!"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>正如我所说，不需要这个操作符，因为你可以使用区间内置的<code>contains()</code>方法编写代码。但是，它确实比<code>contains()</code>有一点语法上的优势，因为它不需要额外的一组括号：</p>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> test1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token number">42</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> test2 <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">100</span> <span class="token operator">~</span><span class="token operator">=</span> <span class="token number">42</span></code></pre>
+<p>我认为<code>~=</code>是使用操作符重载来整理日常语法的一个很好的例子。</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《第四章 函数(Functions)》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/06/pro-swift-yi-wen/chapter4-functions/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                影痕
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'f3f4b0e75a31c33690a1',
+        clientSecret: 'c7a167d236ca9107a6728fcc08468b5237eabe4f',
+        repo: 'BlogComments',
+        owner: 'LucioLee',
+        admin: ["LucioLee"],
+        id: '2019-09-06T16-59-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/09/06/pro-swift-yi-wen/chapter5-errors/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="第五章 错误处理(Errors)">
+                        
+                        <span class="card-title">第五章 错误处理(Errors)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            错误处理、错误传递、断言、先决条件
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Pro-Swift/" class="post-category" target="_blank">
+                                    Pro Swift
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Swift/" target="_blank">
+                        <span class="chip bg-color">Swift</span>
+                    </a>
+                    
+                    <a href="/tags/Pro-Swift/" target="_blank">
+                        <span class="chip bg-color">Pro Swift</span>
+                    </a>
+                    
+                    <a href="/tags/错误处理/" target="_blank">
+                        <span class="chip bg-color">错误处理</span>
+                    </a>
+                    
+                    <a href="/tags/断言/" target="_blank">
+                        <span class="chip bg-color">断言</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/05/pro-swift-yi-wen/chapter3-references-and-values/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="第三章 引用类型和值类型(References and Values)">
+                        
+                        <span class="card-title">第三章 引用类型和值类型(References and Values)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            深入理解引用类型和值类型之间的区别和优缺点。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Pro-Swift/" class="post-category" target="_blank">
+                                    Pro Swift
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Swift/" target="_blank">
+                        <span class="chip bg-color">Swift</span>
+                    </a>
+                    
+                    <a href="/tags/Pro-Swift/" target="_blank">
+                        <span class="chip bg-color">Pro Swift</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('1')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+
+        newdiv.innerHTML += '<br />'
+            + '来源: Li&apos;s Note<br />'
+            + '作者: 影痕<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归@影痕所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站版权归&copy;<a href="https://luciolee.github.io/" target="_blank">影痕</a>所有.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">55.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/LucioLee/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:lixinxin990467229@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=990467229" class="tooltipped" data-tooltip="QQ联系我: 990467229" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
